@@ -296,6 +296,31 @@ _deviceAddress = 0x2A -- Default unshifted 7-bit address of the NAU7802
 
 --   return (result);
 -- }
+function NAU7802_begin(initialize) -- return boolean
+
+--   //Check if the device ack's over I2C
+--   if (NAU7802_isConnected() == false)
+--   {
+--     //There are rare times when the sensor is occupied and doesn't ack. A 2nd try resolves this.
+--     if (isConnected() == false)
+--       return (false);
+--   }
+
+	result = true -- Accumulate a result as we do the setup
+
+	if initialize == true then
+		result = result and NAU7802_reset()
+--     result &= powerUp(); //Power on analog and digital sections of the scale
+--     result &= setLDO(NAU7802_LDO_3V3); //Set LDO to 3.3V
+--     result &= setGain(NAU7802_GAIN_128); //Set gain to 128
+--     result &= setSampleRate(NAU7802_SPS_80); //Set samples per second to 10
+--     result &= setRegister(NAU7802_ADC, 0x30); //Turn off CLK_CHP. From 9.1 power on sequencing.
+--     result &= setBit(NAU7802_PGA_PWR_PGA_CAP_EN, NAU7802_PGA_PWR); //Enable 330pF decoupling cap on chan 2. From 9.14 application circuit note.
+--     result &= calibrateAFE(); //Re-cal analog front end when we change gain, sample rate, or channel
+	end
+
+   return result
+end
 
 -- //Returns true if device is present
 -- //Tests for device ack to I2C address
@@ -308,13 +333,14 @@ _deviceAddress = 0x2A -- Default unshifted 7-bit address of the NAU7802
 -- }
 function NAU7802_isConnected()
 	result = ez.I2Cread(_deviceAddress,0)
-	ez.SetXY(50, 150)
 	if result == nil then
 		-- result = "nil"
+		-- ez.SetXY(50, 150)
 		-- print("isConnected:", result)
 		return false
 	else
-		print("isConnected:" .. string.byte(result, 1))
+		-- ez.SetXY(50, 150)
+		-- print("isConnected:" .. string.byte(result, 1))
 		-- print("string.len:" .. string.len(result))
 		return true
 	end
@@ -440,6 +466,11 @@ end
 --   delay(1);
 --   return (clearBit(NAU7802_PU_CTRL_RR, NAU7802_PU_CTRL)); //Clear RR to leave reset state
 -- }
+function NAU7802_reset()
+--   setBit(NAU7802_PU_CTRL_RR, NAU7802_PU_CTRL); //Set RR
+--   delay(1);
+--   return (clearBit(NAU7802_PU_CTRL_RR, NAU7802_PU_CTRL)); //Clear RR to leave reset state
+end
 
 -- //Set the onboard Low-Drop-Out voltage regulator to a given value
 -- //2.4, 2.7, 3.0, 3.3, 3.6, 3.9, 4.2, 4.5V are available
@@ -642,6 +673,14 @@ end
 
 --   return (-1); //Error
 -- }
+function NAU7802_getRegister(registerAddress)
+	result = ez.I2Cread(_deviceAddress,registerAddress)
+	if result == nil then
+		return -1
+	else
+		return string.byte(result, 1)
+	end
+end
 
 -- //Send a given value to be written to given address
 -- //Return true if successful
@@ -654,6 +693,10 @@ end
 --     return (false); //Sensor did not ACK
 --   return (true);
 -- }
+function NAU7802_setRegister(registerAddress, value)
+	result = ez.I2CWrite(_deviceAddress,registerAddress, value)
+	return result
+end
 
 function printLine(font_height, line, str) -- Show a title sequence for the program
 	-- Display Size -> 320x240 
@@ -664,7 +707,7 @@ function printLine(font_height, line, str) -- Show a title sequence for the prog
 	x2 = 320
 	y2 = font_height * line + font_height
 
-	bg = (10 * line) + 10
+	bg = (8 * line)
 
 	ez.BoxFill(x1,y1, x2,y2, ez.RGB(bg,bg,bg)) -- X, Y, Width, Height, Color
 
@@ -702,13 +745,11 @@ pin = 0
 titleScreen(fn)
 
 result = ez.I2CopenMaster()
--- ez.SetXY(50,150)
--- print(result)
-result = NAU7802_isConnected()
--- ez.SetXY(50,150)
--- print("Connected:" .. result)
+printLine(font_height, 6, "I2C Open: " .. tostring(result) )
 
--- ez.Wait_ms(1000)
+result = NAU7802_isConnected()
+printLine(font_height, 7, "isConnected:" .. tostring(result) )
+ez.Wait_ms(1000)
 
 while 1 do
 
@@ -717,12 +758,23 @@ while 1 do
 
 	printLine(font_height, 1, string.format("%0.4f", weight))
 
-	readPin(fn, pin)
-	pin = pin + 1
+	-- result = NAU7802_getRegister(0)
+	-- printLine(font_height, 3, "reg[0]:" .. result)
+	-- result = NAU7802_getRegister(1)
+	-- printLine(font_height, 4, "reg[1]:" .. result)
+	result = NAU7802_getRegister(2)
+	printLine(font_height, 5, "reg[2]:" .. result)
+	-- result = NAU7802_getRegister(3)
+	-- printLine(font_height, 6, "reg[3]:" .. result)
+	-- result = NAU7802_getRegister(4)
+	-- printLine(font_height, 7, "reg[4]:" .. result)
 
-	if pin > 100 then 
-		pin = 0 
-	end
+	-- readPin(fn, pin)
+	-- pin = pin + 1
+
+	-- if pin > 100 then 
+	-- 	pin = 0 
+	-- end
 
 	ez.Wait_ms(1000)
 
