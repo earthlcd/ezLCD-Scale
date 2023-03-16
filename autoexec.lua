@@ -9,38 +9,6 @@
 --  3V3 - +3.3v (take from RTC Batt Sel)
 --  GND - J7 / Pin 1 (GND )
 
-function titleScreen(fn) -- Show a title sequence for the program
-	ez.Cls(ez.RGB(0,0,0))
-	ez.SetColor(ez.RGB(0,0,255))
-
-	ez.SetFtFont(fn,32,0) -- Font Number, Height, Width
-	ez.SetXY(10, 10)
-	print("Pull Test            ")
-
-	ez.Wait_ms(500)
-end
-
-function readPin(fn, pin) -- Show a title sequence for the program
-	-- Display Weight
-	x1 = 50
-	y1 = 100
-	x2 = 250
-	y2 = 150
-
-	-- Erase Old Weight
-	ez.BoxFill(x1,y1, x2,y2, ez.RGB(30,30,30)) -- X, Y, Width, Height, Color
-
-	-- Display Weight
-	ez.SetColor(ez.RGB(0,0,255))
-	ez.SetFtFont(fn,32,0) -- Font Number, Height, Width
-	ez.SetXY(x1, y1)
-	print(string.format("%0.0f", pin ))
-	-- ez.SetXY(x1 + 50, y1)
-	-- print(string.format("%0.2f", ez.Pin(pin) ))
-end
-
-
-
 -- /*
 --   This is an Arduino library written for the NAU7802 24-bit wheatstone
 --   bridge and load cell amplifier.
@@ -687,8 +655,42 @@ end
 --   return (true);
 -- }
 
+function printLine(font_height, line, str) -- Show a title sequence for the program
+	-- Display Size -> 320x240 
+
+	-- Erase Old Weight
+	x1 = 0
+	y1 = font_height * line
+	x2 = 320
+	y2 = font_height * line + font_height
+
+	bg = (10 * line) + 10
+
+	ez.BoxFill(x1,y1, x2,y2, ez.RGB(bg,bg,bg)) -- X, Y, Width, Height, Color
+
+	-- Display Line
+	ez.SetColor(ez.RGB(0,0,255))
+	ez.SetFtFont(fn, font_height * 0.70) -- Font Number, Height, Width
+	ez.SetXY(x1, y1)
+	print(str)
+end
+
+function titleScreen(fn) -- Show a title sequence for the program
+	ez.Cls(ez.RGB(0,0,0))
+	printLine(font_height, 0, "Pull Test - MqpQ")
+	ez.Wait_ms(500)
+end
+
+
+function readPin(fn, pin) -- Show a title sequence for the program
+	printLine(font_height, 2, string.format("%0.0f", pin ) )
+	-- ez.SetXY(x1 + 50, y1)
+	-- print(string.format("%0.2f", ez.Pin(pin) ))
+end
+
 
 fn = 14
+font_height = 240 / 8 -- = 30
 
 weight = 0.0
 tare = 0
@@ -713,20 +715,7 @@ while 1 do
 	-- get new weight
 	weight = weight + 10.0001
 
-	-- Display Weight
-	x1 = 50
-	y1 = 50
-	x2 = 250
-	y2 = 100
-
-	-- Erase Old Weight
-	ez.BoxFill(x1,y1, x2,y2, ez.RGB(30,30,30)) -- X, Y, Width, Height, Color
-
-	-- Display Weight
-	ez.SetColor(ez.RGB(0,0,255))
-	ez.SetFtFont(14,32,0) -- Font Number, Height, Width
-	ez.SetXY(x1,y1)
-	print(string.format("%0.4f", weight))
+	printLine(font_height, 1, string.format("%0.4f", weight))
 
 	readPin(fn, pin)
 	pin = pin + 1
