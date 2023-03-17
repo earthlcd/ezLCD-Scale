@@ -1,6 +1,64 @@
+----------------------------------------------------------------------
 -- ezLCD Pull test application note example
 --
 -- Created  03/14/2023  -  Jacob Christ
+----------------------------------------------------------------------
+
+----------------------------------------------------------------------
+-- Lua Shift Function documented here:
+-- https://gist.github.com/mebens/938502
+----------------------------------------------------------------------
+-- function lshift(x, by)
+-- 	return x * 2 ^ by
+-- end
+  
+-- function rshift(x, by)
+-- 	return math.floor(x / 2 ^ by)
+-- end
+
+
+
+----------------------------------------------------------------------
+-- Lua Enum Function documented here:
+-- https://www.lexaloffle.com/bbs/?tid=29891
+-- Code here:
+-- https://github.com/sulai/Lib-Pico8/blob/master/lang.lua
+----------------------------------------------------------------------
+
+function enum(names, offset)
+	offset=offset or 1
+	local objects = {}
+	local size=0
+	for idr,name in pairs(names) do
+		local id = idr + offset - 1
+		local obj = {
+			id=id,       -- id
+			idr=idr,     -- 1-based relative id, without offset being added
+			name=name    -- name of the object
+		}
+		objects[name] = obj
+		objects[id] = obj
+		size=size+1
+	end
+	objects.idstart = offset        -- start of the id range being used
+	objects.idend = offset+size-1   -- end of the id range being used
+	objects.size=size
+	objects.all = function()
+		local list = {}
+		for _,name in pairs(names) do
+			add(list,objects[name])
+		end
+		local i=0
+		return function() i=i+1 if i<=#list then return list[i] end end
+	end
+	return objects
+end
+
+
+
+----------------------------------------------------------------------
+-- Sparkfun NAU7802 ported to Lua
+----------------------------------------------------------------------
 
 -- I2C Connections to Sparkfun QWIIC Scale - ezLCD-5035
 -- Pins:
@@ -65,6 +123,42 @@
 --   NAU7802_DEVICE_REV = 0x1F,
 -- } Scale_Registers;
 
+Scale_Registers = enum( 
+{
+  "NAU7802_PU_CTRL",
+  "NAU7802_CTRL1",
+  "NAU7802_CTRL2",
+  "NAU7802_OCAL1_B2",
+  "NAU7802_OCAL1_B1",
+  "NAU7802_OCAL1_B0",
+  "NAU7802_GCAL1_B3",
+  "NAU7802_GCAL1_B2",
+  "NAU7802_GCAL1_B1",
+  "NAU7802_GCAL1_B0",
+  "NAU7802_OCAL2_B2",
+  "NAU7802_OCAL2_B1",
+  "NAU7802_OCAL2_B0",
+  "NAU7802_GCAL2_B3",
+  "NAU7802_GCAL2_B2",
+  "NAU7802_GCAL2_B1",
+  "NAU7802_GCAL2_B0",
+  "NAU7802_I2C_CONTROL",
+  "NAU7802_ADCO_B2",
+  "NAU7802_ADCO_B1",
+  "NAU7802_ADCO_B0",
+  "NAU7802_ADC", 		-- 0x15 Shared ADC and OTP 32:24
+  "NAU7802_OTP_B1",   	-- 0x16 OTP 23:16 or 7:0?
+  "NAU7802_OTP_B0",   	-- 0x17 OTP 15:8
+  "NAU7802_DUM_0x18",
+  "NAU7802_DUM_0x19",
+  "NAU7802_DUM_0x1A",
+  "NAU7802_PGA",		-- 0x1B,
+  "NAU7802_PGA_PWR",	-- 0x1C,
+  "NAU7802_DUM_0x1D",
+  "NAU7802_DUM_0x1E",
+  "NAU7802_DEVICE_REV"	-- 0x1F
+}, 0 )
+
 -- //Bits within the PU_CTRL register
 -- typedef enum
 -- {
@@ -77,6 +171,18 @@
 --   NAU7802_PU_CTRL_OSCS,
 --   NAU7802_PU_CTRL_AVDDS,
 -- } PU_CTRL_Bits;
+PU_CTRL_Bits = enum( 
+{
+	"NAU7802_PU_CTRL_RR",
+	"NAU7802_PU_CTRL_PUD",
+	"NAU7802_PU_CTRL_PUA",
+	"NAU7802_PU_CTRL_PUR",
+	"NAU7802_PU_CTRL_CS",
+	"NAU7802_PU_CTRL_CR",
+	"NAU7802_PU_CTRL_OSCS",
+	"NAU7802_PU_CTRL_AVDDS"
+}, 0)
+
 
 -- //Bits within the CTRL1 register
 -- typedef enum
@@ -129,6 +235,17 @@
 --   NAU7802_LDO_4V2 = 0b001,
 --   NAU7802_LDO_4V5 = 0b000,
 -- } NAU7802_LDO_Values;
+NAU7802_LDO_Values = enum( 
+{
+  "NAU7802_LDO_4V5", -- = 0b000,
+  "NAU7802_LDO_4V2", -- = 0b001,
+  "NAU7802_LDO_3V9", -- = 0b010,
+  "NAU7802_LDO_3V6", -- = 0b011,
+  "NAU7802_LDO_3V3", -- = 0b100,
+  "NAU7802_LDO_3V0", -- = 0b101,
+  "NAU7802_LDO_2V7", -- = 0b110,
+  "NAU7802_LDO_2V4", -- = 0b111,
+}, 0)
 
 -- //Allowed gains
 -- typedef enum
@@ -297,21 +414,22 @@ _deviceAddress = 0x2A -- Default unshifted 7-bit address of the NAU7802
 --   return (result);
 -- }
 function NAU7802_begin(initialize) -- return boolean
+	local result
 
---   //Check if the device ack's over I2C
---   if (NAU7802_isConnected() == false)
---   {
---     //There are rare times when the sensor is occupied and doesn't ack. A 2nd try resolves this.
---     if (isConnected() == false)
---       return (false);
---   }
+	-- Check if the device ack's over I2C
+	if NAU7802_isConnected() == false then
+		-- There are rare times when the sensor is occupied and doesn't ack. A 2nd try resolves this.
+		if NAU7802_isConnected() == false then
+			return false
+		end
+	end
 
 	result = true -- Accumulate a result as we do the setup
 
 	if initialize == true then
 		result = result and NAU7802_reset()
---     result &= powerUp(); //Power on analog and digital sections of the scale
---     result &= setLDO(NAU7802_LDO_3V3); //Set LDO to 3.3V
+		result = result and NAU7802_powerUp() -- Power on analog and digital sections of the scale
+	    result = result and NAU7802_setLDO(NAU7802_LDO_Values.NAU7802_LDO_3V3.id) -- Set LDO to 3.3V
 --     result &= setGain(NAU7802_GAIN_128); //Set gain to 128
 --     result &= setSampleRate(NAU7802_SPS_80); //Set samples per second to 10
 --     result &= setRegister(NAU7802_ADC, 0x30); //Turn off CLK_CHP. From 9.1 power on sequencing.
@@ -332,6 +450,7 @@ end
 --   return (true);    //All good
 -- }
 function NAU7802_isConnected()
+	local result
 	result = ez.I2Cread(_deviceAddress,0)
 	if result == nil then
 		-- result = "nil"
@@ -451,6 +570,27 @@ end
 --   }
 --   return (true);
 -- }
+function NAU7802_powerUp() -- bool NAU7802::powerUp()
+	local counter
+	NAU7802_setBit(PU_CTRL_Bits.NAU7802_PU_CTRL_PUD.id, Scale_Registers.NAU7802_PU_CTRL.id)
+	NAU7802_setBit(PU_CTRL_Bits.NAU7802_PU_CTRL_PUA.id, Scale_Registers.NAU7802_PU_CTRL.id)
+
+	-- Wait for Power Up bit to be set - takes approximately 200us
+	counter = 0 --	uint8_t counter = 0;
+	while 1==1 do
+		if NAU7802_getBit(PU_CTRL_Bits.NAU7802_PU_CTRL_PUR.id, Scale_Registers.NAU7802_PU_CTRL.id) == true then
+			break	-- Good to go
+		end
+		ez.Wait_ms(1)
+		if (counter > 100) then
+			return false -- Error
+		end
+		counter = counter + 1
+	end
+	return true
+end
+
+
 
 -- //Puts scale into low-power mode
 -- bool NAU7802::powerDown()
@@ -467,9 +607,9 @@ end
 --   return (clearBit(NAU7802_PU_CTRL_RR, NAU7802_PU_CTRL)); //Clear RR to leave reset state
 -- }
 function NAU7802_reset()
---   setBit(NAU7802_PU_CTRL_RR, NAU7802_PU_CTRL); //Set RR
---   delay(1);
---   return (clearBit(NAU7802_PU_CTRL_RR, NAU7802_PU_CTRL)); //Clear RR to leave reset state
+	NAU7802_setBit(PU_CTRL_Bits.NAU7802_PU_CTRL_RR.id, Scale_Registers.NAU7802_PU_CTRL.id) -- Set RR
+	ez.Wait_ms(1)
+	return (NAU7802_clearBit(PU_CTRL_Bits.NAU7802_PU_CTRL_RR.id, Scale_Registers.NAU7802_PU_CTRL.id)) -- Clear RR to leave reset state
 end
 
 -- //Set the onboard Low-Drop-Out voltage regulator to a given value
@@ -487,6 +627,20 @@ end
 
 --   return (setBit(NAU7802_PU_CTRL_AVDDS, NAU7802_PU_CTRL)); //Enable the internal LDO
 -- }
+function NAU7802_setLDO(ldoValue) -- bool NAU7802::setLDO(uint8_t ldoValue)
+	local value
+	if (ldoValue > 0x7) then
+		ldoValue = 0x7 -- Error check
+	end
+
+	-- Set the value of the LDO
+	value = NAU7802_getRegister(Scale_Registers.NAU7802_CTRL1.id);
+	value = value & 0xC7 -- 0b11000111 Clear LDO bits
+	value = value | ((ldoValue << 3) & 0xFF) -- Mask in new LDO bits
+	NAU7802_setRegister(Scale_Registers.NAU7802_CTRL1.id, value)
+
+	return (NAU7802_setBit(PU_CTRL_Bits.NAU7802_PU_CTRL_AVDDS.id, Scale_Registers.NAU7802_PU_CTRL.id)) -- Enable the internal LDO
+end
 
 -- //Set the gain
 -- //x1, 2, 4, 8, 16, 32, 64, 128 are avaialable
@@ -641,6 +795,16 @@ end
 --   value |= (1 << bitNumber); //Set this bit
 --   return (setRegister(registerAddress, value));
 -- }
+function NAU7802_setBit(bitNumber, registerAddress) -- bool NAU7802::setBit(uint8_t bitNumber, uint8_t registerAddress)
+	local value
+	printLine(font_height, 2, "setBit(" .. tostring(bitNumber) .. ", " .. tostring(registerAddress) .. ")")
+	value = NAU7802_getRegister(registerAddress)
+	printLine(font_height, 3, "value " .. tostring(value))
+	value = value | (1 << bitNumber)	-- Set this bit
+	printLine(font_height, 4, "value " .. tostring(value))
+	display_pause()
+	return NAU7802_setRegister(registerAddress, value)
+end
 
 -- //Mask & clear a given bit within a register
 -- bool NAU7802::clearBit(uint8_t bitNumber, uint8_t registerAddress)
@@ -649,6 +813,16 @@ end
 --   value &= ~(1 << bitNumber); //Set this bit
 --   return (setRegister(registerAddress, value));
 -- }
+function NAU7802_clearBit(bitNumber, registerAddress) -- bool NAU7802::clearBit(uint8_t bitNumber, uint8_t registerAddress)
+	local value
+	printLine(font_height, 2, "clearBit(" .. tostring(bitNumber) .. ", " .. tostring(registerAddress) .. ")")
+	value = NAU7802_getRegister(registerAddress)
+	printLine(font_height, 3, "value " .. tostring(value))
+	value = value & ((~(1 << bitNumber)) & 0xff)	-- Clear this bit
+	printLine(font_height, 4, "value " .. tostring(value))
+	display_pause()
+	return NAU7802_setRegister(registerAddress, value)
+end
 
 -- //Return a given bit within a register
 -- bool NAU7802::getBit(uint8_t bitNumber, uint8_t registerAddress)
@@ -657,6 +831,17 @@ end
 --   value &= (1 << bitNumber); //Clear all but this bit
 --   return (value);
 -- }
+function NAU7802_getBit(bitNumber, registerAddress) -- bool NAU7802::getBit(uint8_t bitNumber, uint8_t registerAddress)
+	local value
+	printLine(font_height, 2, "getBit(" .. tostring(bitNumber) .. ", " .. tostring(registerAddress) .. ")")
+	value = NAU7802_getRegister(registerAddress)
+	printLine(font_height, 3, "value " .. tostring(value))
+	value = value & ((1 << bitNumber) & 0xff)	-- Clear this bit
+	value = value > 0 and true or false
+	printLine(font_height, 4, "value " .. tostring(value))
+	display_pause()
+	return value
+end
 
 -- //Get contents of a register
 -- uint8_t NAU7802::getRegister(uint8_t registerAddress)
@@ -674,7 +859,9 @@ end
 --   return (-1); //Error
 -- }
 function NAU7802_getRegister(registerAddress)
+	local result
 	result = ez.I2Cread(_deviceAddress,registerAddress)
+	printLine(font_height, 6, tostring(result) ..  "=getRegister(" .. tostring(_deviceAddress) .. ", " .. tostring(registerAddress) .. ")" )
 	if result == nil then
 		return -1
 	else
@@ -694,11 +881,19 @@ end
 --   return (true);
 -- }
 function NAU7802_setRegister(registerAddress, value)
-	result = ez.I2CWrite(_deviceAddress,registerAddress, value)
+	local result
+	printLine(font_height, 7, "setRegister " .. tostring(_deviceAddress) .. ", " .. tostring(registerAddress) .. ", " .. tostring(value) )
+	result = ez.I2Cwrite(_deviceAddress,registerAddress, value)
+
+	-- Multi byte I2C write
+	-- data = string.char(value)
+	-- result = ez.I2Cwrite(_deviceAddress,registerAddress, data, string.len(data))
+
 	return result
 end
 
 function printLine(font_height, line, str) -- Show a title sequence for the program
+	local x1, y1, x2, y2, bg
 	-- Display Size -> 320x240 
 
 	-- Erase Old Weight
@@ -731,11 +926,18 @@ function readPin(fn, pin) -- Show a title sequence for the program
 	-- print(string.format("%0.2f", ez.Pin(pin) ))
 end
 
+function display_pause()
+	for i= 9,0,-1 do
+		printLine(font_height, 1, string.format("%d", i) )
+		ez.Wait_ms(1000)
+	end
+end
+
 
 fn = 14
 font_height = 240 / 8 -- = 30
 
-weight = 0.0
+weight = 0
 tare = 0
 weight_max = 0
 pin = 0
@@ -745,13 +947,22 @@ pin = 0
 titleScreen(fn)
 
 result = ez.I2CopenMaster()
-printLine(font_height, 6, "I2C Open: " .. tostring(result) )
+printLine(font_height, 5, "I2C Open: " .. tostring(result) )
+ez.Wait_ms(250)
 
 result = NAU7802_isConnected()
-printLine(font_height, 7, "isConnected:" .. tostring(result) )
+printLine(font_height, 6, "isConnected:" .. tostring(result) )
+ez.Wait_ms(250)
+
+result = NAU7802_begin(true) -- return boolean
+printLine(font_height, 6, "begin:" .. tostring(result) )
 ez.Wait_ms(1000)
 
 while 1 do
+
+	-- printLine(font_height, 1, tostring(weight) .. " " .. tostring( (~weight) & 0xff ) )
+	-- printLine(font_height, 2, tostring(weight) .. " " .. tostring(1 << weight) )
+	-- weight = weight + 1
 
 	-- get new weight
 	weight = weight + 10.0001
@@ -759,11 +970,11 @@ while 1 do
 	printLine(font_height, 1, string.format("%0.4f", weight))
 
 	-- result = NAU7802_getRegister(0)
-	-- printLine(font_height, 3, "reg[0]:" .. result)
+	-- printLine(font_height, 2, "reg[0]:" .. result)
 	-- result = NAU7802_getRegister(1)
 	-- printLine(font_height, 4, "reg[1]:" .. result)
-	result = NAU7802_getRegister(2)
-	printLine(font_height, 5, "reg[2]:" .. result)
+	-- result = NAU7802_getRegister(2)
+	-- printLine(font_height, 5, "reg[2]:" .. result)
 	-- result = NAU7802_getRegister(3)
 	-- printLine(font_height, 6, "reg[3]:" .. result)
 	-- result = NAU7802_getRegister(4)
