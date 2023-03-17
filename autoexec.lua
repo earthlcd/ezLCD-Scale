@@ -861,7 +861,7 @@ end
 function NAU7802_getRegister(registerAddress)
 	local result
 	result = ez.I2Cread(_deviceAddress,registerAddress)
-	printLine(font_height, 6, tostring(result) ..  "=getRegister(" .. tostring(_deviceAddress) .. ", " .. tostring(registerAddress) .. ")" )
+	printLine(font_height, 6, string.byte(result, 1) ..  "=getRegister(" .. tostring(_deviceAddress) .. ", " .. tostring(registerAddress) .. ")" )
 	if result == nil then
 		return -1
 	else
