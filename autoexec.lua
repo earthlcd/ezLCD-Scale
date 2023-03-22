@@ -202,6 +202,17 @@ PU_CTRL_Bits = enum(
 --   NAU7802_CTRL2_CRS = 4,
 --   NAU7802_CTRL2_CHS = 7,
 -- } CTRL2_Bits;
+CTRL2_Bits = enum( 
+{
+	"NAU7802_CTRL2_CALMOD",    -- = 0,
+	"NAU7802_CTRL2_DUM_1",     -- = 1,
+	"NAU7802_CTRL2_CALS",      -- = 2,
+	"NAU7802_CTRL2_CAL_ERROR", -- = 3,
+	"NAU7802_CTRL2_CRS",       -- = 4,
+	"NAU7802_CTRL2_DUM_5",     -- = 5,
+	"NAU7802_CTRL2_DUM_6",     -- = 6,
+	"NAU7802_CTRL2_CHS",       -- = 7,
+}, 0)
 
 -- //Bits within the PGA register
 -- typedef enum
@@ -222,6 +233,17 @@ PU_CTRL_Bits = enum(
 --   NAU7802_PGA_PWR_MSTR_BIAS_CURR = 4,
 --   NAU7802_PGA_PWR_PGA_CAP_EN = 7,
 -- } PGA_PWR_Bits;
+PGA_PWR_Bits = enum( 
+{
+	"NAU7802_PGA_PWR_PGA_CURR",       -- = 0,
+	"NAU7802_PGA_PWR_DUM_1",          -- = 1,
+	"NAU7802_PGA_PWR_ADC_CURR",       -- = 2,
+	"NAU7802_PGA_PWR_DUM_3",          -- = 3,
+	"NAU7802_PGA_PWR_MSTR_BIAS_CURR", -- = 4,
+	"NAU7802_PGA_PWR_DUM_5",          -- = 5,
+	"NAU7802_PGA_PWR_DUM_6",          -- = 6,
+	"NAU7802_PGA_PWR_PGA_CAP_EN",     -- = 7,
+}, 0)
 
 -- //Allowed Low drop out regulator voltages
 -- typedef enum
@@ -259,6 +281,18 @@ NAU7802_LDO_Values = enum(
 --   NAU7802_GAIN_2 = 0b001,
 --   NAU7802_GAIN_1 = 0b000,
 -- } NAU7802_Gain_Values;
+NAU7802_Gain_Values = enum(
+{
+	"NAU7802_GAIN_1",   -- = 0b000,
+	"NAU7802_GAIN_2",   -- = 0b001,
+	"NAU7802_GAIN_4",   -- = 0b010,
+	"NAU7802_GAIN_8",   -- = 0b011,
+	"NAU7802_GAIN_16",  -- = 0b100,
+	"NAU7802_GAIN_32",  -- = 0b101,
+	"NAU7802_GAIN_64",  -- = 0b110,
+	"NAU7802_GAIN_128", -- = 0b111,
+}, 0)
+
 
 -- //Allowed samples per second
 -- typedef enum
@@ -269,6 +303,14 @@ NAU7802_LDO_Values = enum(
 --   NAU7802_SPS_20 = 0b001,
 --   NAU7802_SPS_10 = 0b000,
 -- } NAU7802_SPS_Values;
+NAU7802_SPS_Values = enum(
+{
+	"NAU7802_SPS_10",  -- = 0b000,
+	"NAU7802_SPS_20",  -- = 0b001,
+	"NAU7802_SPS_40",  -- = 0b010,
+	"NAU7802_SPS_80",  -- = 0b011,
+	"NAU7802_SPS_320", -- = 0b111,
+}, 0)
 
 -- //Select between channel values
 -- typedef enum
@@ -284,6 +326,12 @@ NAU7802_LDO_Values = enum(
 --   NAU7802_CAL_IN_PROGRESS = 1,
 --   NAU7802_CAL_FAILURE = 2,
 -- } NAU7802_Cal_Status;
+NAU7802_Cal_Status = enum(
+{
+	"NAU7802_CAL_SUCCESS",     -- = 0,
+	"NAU7802_CAL_IN_PROGRESS", -- = 1,
+	"NAU7802_CAL_FAILURE",     -- = 2,
+}, 0)
 
 -- class NAU7802
 -- {
@@ -430,11 +478,11 @@ function NAU7802_begin(initialize) -- return boolean
 		result = result and NAU7802_reset()
 		result = result and NAU7802_powerUp() -- Power on analog and digital sections of the scale
 	    result = result and NAU7802_setLDO(NAU7802_LDO_Values.NAU7802_LDO_3V3.id) -- Set LDO to 3.3V
---     result &= setGain(NAU7802_GAIN_128); //Set gain to 128
---     result &= setSampleRate(NAU7802_SPS_80); //Set samples per second to 10
---     result &= setRegister(NAU7802_ADC, 0x30); //Turn off CLK_CHP. From 9.1 power on sequencing.
---     result &= setBit(NAU7802_PGA_PWR_PGA_CAP_EN, NAU7802_PGA_PWR); //Enable 330pF decoupling cap on chan 2. From 9.14 application circuit note.
---     result &= calibrateAFE(); //Re-cal analog front end when we change gain, sample rate, or channel
+		result = result and NAU7802_setGain(NAU7802_Gain_Values.NAU7802_GAIN_128.id) -- Set gain to 128
+		result = result and NAU7802_setSampleRate(NAU7802_SPS_Values.NAU7802_SPS_80.id) -- Set samples per second to 10
+		result = result and NAU7802_setRegister(Scale_Registers.NAU7802_ADC.id, 0x30) -- Turn off CLK_CHP. From 9.1 power on sequencing.
+		result = result and NAU7802_setBit(PGA_PWR_Bits.NAU7802_PGA_PWR_PGA_CAP_EN.id, Scale_Registers.NAU7802_PGA_PWR.id) -- Enable 330pF decoupling cap on chan 2. From 9.14 application circuit note.
+		result = result and NAU7802_calibrateAFE() -- Re-cal analog front end when we change gain, sample rate, or channel
 	end
 
    return result
@@ -480,6 +528,12 @@ end
 --   beginCalibrateAFE();
 --   return waitForCalibrateAFE(1000);
 -- }
+function NAU7802_calibrateAFE() -- bool NAU7802::calibrateAFE()
+	printLine(font_height, 0, "1")
+	NAU7802_beginCalibrateAFE()
+	printLine(font_height, 0, "2")
+	return NAU7802_waitForCalibrateAFE(1000)
+end
 
 -- //Begin asynchronous calibration of the analog front end.
 -- // Poll for completion with calAFEStatus() or wait with waitForCalibrateAFE()
@@ -487,6 +541,11 @@ end
 -- {
 --   setBit(NAU7802_CTRL2_CALS, NAU7802_CTRL2);
 -- }
+function NAU7802_beginCalibrateAFE() -- void NAU7802::beginCalibrateAFE()
+	printLine(font_height, 0, "11")
+	NAU7802_setBit(CTRL2_Bits.NAU7802_CTRL2_CALS.id, Scale_Registers.NAU7802_CTRL2.id);
+	printLine(font_height, 0, "12")
+end
 
 -- //Check calibration status.
 -- NAU7802_Cal_Status NAU7802::calAFEStatus()
@@ -504,6 +563,21 @@ end
 --   // Calibration passed
 --   return NAU7802_CAL_SUCCESS;
 -- }
+function NAU7802_calAFEStatus() -- NAU7802_Cal_Status NAU7802::calAFEStatus()
+	printLine(font_height, 0, "211")
+	if (NAU7802_getBit(CTRL2_Bits.NAU7802_CTRL2_CALS.id, Scale_Registers.NAU7802_CTRL2.id)) then
+		return NAU7802_Cal_Status.NAU7802_CAL_IN_PROGRESS.id
+	end
+	printLine(font_height, 0, "212")
+
+	if (NAU7802_getBit(CTRL2_Bits.NAU7802_CTRL2_CAL_ERROR.id, Scale_Registers.NAU7802_CTRL2.id)) then
+		return NAU7802_Cal_Status.NAU7802_CAL_FAILURE.id
+	end
+	printLine(font_height, 0, "213")
+
+	-- Calibration passed
+	return NAU7802_Cal_Status.NAU7802_CAL_SUCCESS.id
+end
 
 -- //Wait for asynchronous AFE calibration to complete with optional timeout.
 -- //If timeout is not specified (or set to 0), then wait indefinitely.
@@ -528,6 +602,32 @@ end
 --   }
 --   return (false);
 -- }
+function NAU7802_waitForCalibrateAFE(timeout_ms) -- bool NAU7802::waitForCalibrateAFE(uint32_t timeout_ms)
+	local begin = ez.Get_ms() --   uint32_t begin = millis();
+	local cal_ready --   NAU7802_Cal_Status cal_ready;
+
+	printLine(font_height, 0, "21")
+	cal_ready = NAU7802_calAFEStatus()
+	while (cal_ready == NAU7802_Cal_Status.NAU7802_CAL_IN_PROGRESS.id) do
+		printLine(font_height, 0, "22")
+		if ((timeout_ms > 0) and ((ez.Get_ms()() - begin) > timeout_ms)) then
+			break
+		end
+		printLine(font_height, 0, "23")
+		ez.Wait_ms(1)
+		printLine(font_height, 0, "24")
+		cal_ready = NAU7802_calAFEStatus()
+		printLine(font_height, 0, "25")
+	end
+	printLine(font_height, 0, "26")
+
+	if (cal_ready == NAU7802_Cal_Status.NAU7802_CAL_SUCCESS.id) then
+		printLine(font_height, 0, "27")
+		return true
+	end
+	printLine(font_height, 0, "28")
+	return false
+end
 
 -- //Set the readings per second
 -- //10, 20, 40, 80, and 320 samples per second is available
@@ -542,6 +642,17 @@ end
 
 --   return (setRegister(NAU7802_CTRL2, value));
 -- }
+function NAU7802_setSampleRate(rate) -- bool NAU7802::setSampleRate(uint8_t rate)
+	local value
+	if (rate > 0x7) then
+		rate = 0x7 -- Error check
+	end
+
+	value = NAU7802_getRegister(Scale_Registers.NAU7802_CTRL2.id);
+	value = value & 0x8F -- 0b10001111; //Clear CRS bits
+	value = value | ((rate << 4) & 0xFF) -- Mask in new CRS bits
+	return NAU7802_setRegister(Scale_Registers.NAU7802_CTRL2.id, value)
+end
 
 -- //Select between 1 and 2
 -- bool NAU7802::setChannel(uint8_t channelNumber)
@@ -655,6 +766,17 @@ end
 
 --   return (setRegister(NAU7802_CTRL1, value));
 -- }
+function NAU7802_setGain(gainValue) -- bool NAU7802::setGain(uint8_t gainValue)
+	local value
+	if (gainValue > 0x7) then
+		gainValue = 0x7 -- Error check
+	end
+
+	value = NAU7802_getRegister(Scale_Registers.NAU7802_CTRL1.id);
+	value = value & 0xF8 -- 0b11111000; //Clear gain bits
+	value = value | ((gainValue) & 0xFF) -- Mask in new LDO bits
+	return NAU7802_setRegister(Scale_Registers.NAU7802_CTRL1.id, value)
+end
 
 -- //Get the revision code of this IC
 -- uint8_t NAU7802::getRevisionCode()
@@ -797,12 +919,19 @@ end
 -- }
 function NAU7802_setBit(bitNumber, registerAddress) -- bool NAU7802::setBit(uint8_t bitNumber, uint8_t registerAddress)
 	local value
+	printLine(font_height, 0, "111")
 	printLine(font_height, 2, "setBit(" .. tostring(bitNumber) .. ", " .. tostring(registerAddress) .. ")")
+	printLine(font_height, 0, "112")
 	value = NAU7802_getRegister(registerAddress)
+	printLine(font_height, 0, "113")
 	printLine(font_height, 3, "value " .. tostring(value))
+	printLine(font_height, 0, "114")
 	value = value | (1 << bitNumber)	-- Set this bit
+	printLine(font_height, 0, "115")
 	printLine(font_height, 4, "value " .. tostring(value))
+	printLine(font_height, 0, "116")
 	display_pause()
+	printLine(font_height, 0, "117")
 	return NAU7802_setRegister(registerAddress, value)
 end
 
@@ -911,6 +1040,7 @@ function printLine(font_height, line, str) -- Show a title sequence for the prog
 	ez.SetFtFont(fn, font_height * 0.70) -- Font Number, Height, Width
 	ez.SetXY(x1, y1)
 	print(str)
+	ez.Wait_ms(200)
 end
 
 function titleScreen(fn) -- Show a title sequence for the program
@@ -929,7 +1059,7 @@ end
 function display_pause()
 	for i= 9,0,-1 do
 		printLine(font_height, 1, string.format("%d", i) )
-		ez.Wait_ms(1000)
+		ez.Wait_ms(500)
 	end
 end
 
