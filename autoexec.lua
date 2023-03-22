@@ -918,20 +918,23 @@ end
 --   return (setRegister(registerAddress, value));
 -- }
 function NAU7802_setBit(bitNumber, registerAddress) -- bool NAU7802::setBit(uint8_t bitNumber, uint8_t registerAddress)
-	local value
-	printLine(font_height, 0, "111")
+	local value_init, value
+	value = 0
+	printLine(font_height, 0, "setBit 1")
 	printLine(font_height, 2, "setBit(" .. tostring(bitNumber) .. ", " .. tostring(registerAddress) .. ")")
-	printLine(font_height, 0, "112")
-	value = NAU7802_getRegister(registerAddress)
-	printLine(font_height, 0, "113")
-	printLine(font_height, 3, "value " .. tostring(value))
-	printLine(font_height, 0, "114")
-	value = value | (1 << bitNumber)	-- Set this bit
-	printLine(font_height, 0, "115")
-	printLine(font_height, 4, "value " .. tostring(value))
-	printLine(font_height, 0, "116")
+	printLine(font_height, 0, "setBit 2")
+	value_init = NAU7802_getRegister(registerAddress)
+	printLine(font_height, 0, "setBit 3")
+	printLine(font_height, 4, "value " .. string.format("%02X", value_init) .. " -> " .. string.format("%02X", value))
+	printLine(font_height, 0, "setBit 4")
+	printLine(font_height, 3, "value |= (1 << " .. tostring(bitNumber) .. ")")
+	printLine(font_height, 0, "setBit 5")
+	value = value_init | (1 << bitNumber)	-- Set this bit
+	printLine(font_height, 0, "setBit 6")
+	printLine(font_height, 4, "value " .. string.format("%02X", value_init) .. " -> " .. string.format("%02X", value))
+	printLine(font_height, 0, "setBit 7")
 	display_pause()
-	printLine(font_height, 0, "117")
+	printLine(font_height, 0, "setBit 8")
 	return NAU7802_setRegister(registerAddress, value)
 end
 
@@ -943,13 +946,23 @@ end
 --   return (setRegister(registerAddress, value));
 -- }
 function NAU7802_clearBit(bitNumber, registerAddress) -- bool NAU7802::clearBit(uint8_t bitNumber, uint8_t registerAddress)
-	local value
+	local value_init, value
+	value = 0
+	printLine(font_height, 0, "clearBit 1")
 	printLine(font_height, 2, "clearBit(" .. tostring(bitNumber) .. ", " .. tostring(registerAddress) .. ")")
-	value = NAU7802_getRegister(registerAddress)
-	printLine(font_height, 3, "value " .. tostring(value))
-	value = value & ((~(1 << bitNumber)) & 0xff)	-- Clear this bit
-	printLine(font_height, 4, "value " .. tostring(value))
+	printLine(font_height, 0, "clearBit 2")
+	value_init = NAU7802_getRegister(registerAddress)
+	printLine(font_height, 0, "clearBit 3")
+	printLine(font_height, 4, "value " .. string.format("%02X", value_init) .. " -> " .. string.format("%02X", value))
+	printLine(font_height, 0, "clearBit 4")
+	printLine(font_height, 3, "value &= ~(1 << " .. tostring(bitNumber) .. ")")
+	printLine(font_height, 0, "clearBit 5")
+	value = value_init & ((~(1 << bitNumber)) & 0xff)	-- Clear this bit
+	printLine(font_height, 0, "clearBit 6")
+	printLine(font_height, 4, "value " .. string.format("%02X", value_init) .. " -> " .. string.format("%02X", value))
+	printLine(font_height, 0, "clearBit 7")
 	display_pause()
+	printLine(font_height, 0, "clearBit 8")
 	return NAU7802_setRegister(registerAddress, value)
 end
 
@@ -961,14 +974,25 @@ end
 --   return (value);
 -- }
 function NAU7802_getBit(bitNumber, registerAddress) -- bool NAU7802::getBit(uint8_t bitNumber, uint8_t registerAddress)
-	local value
+	local value_init, value
+	value = 0
+	printLine(font_height, 0, "getBit 1")
 	printLine(font_height, 2, "getBit(" .. tostring(bitNumber) .. ", " .. tostring(registerAddress) .. ")")
-	value = NAU7802_getRegister(registerAddress)
-	printLine(font_height, 3, "value " .. tostring(value))
-	value = value & ((1 << bitNumber) & 0xff)	-- Clear this bit
+	printLine(font_height, 0, "getBit 2")
+	value_init = NAU7802_getRegister(registerAddress)
+	printLine(font_height, 0, "getBit 3")
+	printLine(font_height, 4, "value " .. string.format("%02X", value_init) .. " -> " .. string.format("%02X", value))
+	printLine(font_height, 0, "getBit 4")
+	printLine(font_height, 3, "value &= (1 << " .. tostring(bitNumber) .. ")")
+	printLine(font_height, 0, "getBit 5")
+	value = value_init & ((1 << bitNumber) & 0xff)	-- Clear this bit
+	printLine(font_height, 0, "getBit 6")
 	value = value > 0 and true or false
-	printLine(font_height, 4, "value " .. tostring(value))
+	printLine(font_height, 0, "getBit 7")
+	printLine(font_height, 4, "value " .. string.format("%02X", value_init) .. " -> " .. tostring(value))
+	printLine(font_height, 0, "getBit 8")
 	display_pause()
+	printLine(font_height, 0, "getBit 9")
 	return value
 end
 
@@ -1040,7 +1064,7 @@ function printLine(font_height, line, str) -- Show a title sequence for the prog
 	ez.SetFtFont(fn, font_height * 0.70) -- Font Number, Height, Width
 	ez.SetXY(x1, y1)
 	print(str)
-	ez.Wait_ms(200)
+	-- ez.Wait_ms(200)
 end
 
 function titleScreen(fn) -- Show a title sequence for the program
@@ -1059,7 +1083,7 @@ end
 function display_pause()
 	for i= 9,0,-1 do
 		printLine(font_height, 1, string.format("%d", i) )
-		ez.Wait_ms(500)
+		ez.Wait_ms(100)
 	end
 end
 
