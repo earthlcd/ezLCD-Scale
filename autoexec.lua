@@ -462,7 +462,7 @@ _deviceAddress = 0x2A -- Default unshifted 7-bit address of the NAU7802
 --   return (result);
 -- }
 function NAU7802_begin(initialize) -- return boolean
-	local result
+	local result, str
 
 	-- Check if the device ack's over I2C
 	if NAU7802_isConnected() == false then
@@ -475,14 +475,32 @@ function NAU7802_begin(initialize) -- return boolean
 	result = true -- Accumulate a result as we do the setup
 
 	if initialize == true then
+		str = "NAU7802_reset"
+		ez.SerialTx(str .. "\r\n", 80, debug_port)
 		result = result and NAU7802_reset()
+		str = "NAU7802_powerUp"
+		ez.SerialTx(str .. "\r\n", 80, debug_port)
 		result = result and NAU7802_powerUp() -- Power on analog and digital sections of the scale
+		str = "NAU7802_setLDO"
+		ez.SerialTx(str .. "\r\n", 80, debug_port)
 	    result = result and NAU7802_setLDO(NAU7802_LDO_Values.NAU7802_LDO_3V3.id) -- Set LDO to 3.3V
+		str = "NAU7802_setGain"
+		ez.SerialTx(str .. "\r\n", 80, debug_port)
 		result = result and NAU7802_setGain(NAU7802_Gain_Values.NAU7802_GAIN_128.id) -- Set gain to 128
+		str = "NAU7802_setSampleRate"
+		ez.SerialTx(str .. "\r\n", 80, debug_port)
 		result = result and NAU7802_setSampleRate(NAU7802_SPS_Values.NAU7802_SPS_80.id) -- Set samples per second to 10
+		str = "NAU7802_setRegister"
+		ez.SerialTx(str .. "\r\n", 80, debug_port)
 		result = result and NAU7802_setRegister(Scale_Registers.NAU7802_ADC.id, 0x30) -- Turn off CLK_CHP. From 9.1 power on sequencing.
+		str = "NAU7802_setBit"
+		ez.SerialTx(str .. "\r\n", 80, debug_port)
 		result = result and NAU7802_setBit(PGA_PWR_Bits.NAU7802_PGA_PWR_PGA_CAP_EN.id, Scale_Registers.NAU7802_PGA_PWR.id) -- Enable 330pF decoupling cap on chan 2. From 9.14 application circuit note.
+		str = "NAU7802_calibrateAFE"
+		ez.SerialTx(str .. "\r\n", 80, debug_port)
 		result = result and NAU7802_calibrateAFE() -- Re-cal analog front end when we change gain, sample rate, or channel
+		str = "done."
+		ez.SerialTx(str .. "\r\n", 80, debug_port)
 	end
 
    return result
@@ -536,9 +554,7 @@ end
 --   return waitForCalibrateAFE(1000);
 -- }
 function NAU7802_calibrateAFE() -- bool NAU7802::calibrateAFE()
-	printLine(font_height, 0, "1")
 	NAU7802_beginCalibrateAFE()
-	printLine(font_height, 0, "2")
 	return NAU7802_waitForCalibrateAFE(1000)
 end
 
@@ -549,9 +565,7 @@ end
 --   setBit(NAU7802_CTRL2_CALS, NAU7802_CTRL2);
 -- }
 function NAU7802_beginCalibrateAFE() -- void NAU7802::beginCalibrateAFE()
-	printLine(font_height, 0, "11")
 	NAU7802_setBit(CTRL2_Bits.NAU7802_CTRL2_CALS.id, Scale_Registers.NAU7802_CTRL2.id);
-	printLine(font_height, 0, "12")
 end
 
 -- //Check calibration status.
@@ -571,16 +585,20 @@ end
 --   return NAU7802_CAL_SUCCESS;
 -- }
 function NAU7802_calAFEStatus() -- NAU7802_Cal_Status NAU7802::calAFEStatus()
-	printLine(font_height, 0, "211")
+	local str
+	str = "NAU7802_calAFEStatus 1"
+	ez.SerialTx(str .. "\r\n", 80, debug_port)
 	if (NAU7802_getBit(CTRL2_Bits.NAU7802_CTRL2_CALS.id, Scale_Registers.NAU7802_CTRL2.id)) then
 		return NAU7802_Cal_Status.NAU7802_CAL_IN_PROGRESS.id
 	end
-	printLine(font_height, 0, "212")
+	str = "NAU7802_calAFEStatus 2"
+	ez.SerialTx(str .. "\r\n", 80, debug_port)
 
 	if (NAU7802_getBit(CTRL2_Bits.NAU7802_CTRL2_CAL_ERROR.id, Scale_Registers.NAU7802_CTRL2.id)) then
 		return NAU7802_Cal_Status.NAU7802_CAL_FAILURE.id
 	end
-	printLine(font_height, 0, "213")
+	str = "NAU7802_calAFEStatus 3"
+	ez.SerialTx(str .. "\r\n", 80, debug_port)
 
 	-- Calibration passed
 	return NAU7802_Cal_Status.NAU7802_CAL_SUCCESS.id
@@ -610,29 +628,27 @@ end
 --   return (false);
 -- }
 function NAU7802_waitForCalibrateAFE(timeout_ms) -- bool NAU7802::waitForCalibrateAFE(uint32_t timeout_ms)
+	local str
 	local begin = ez.Get_ms() --   uint32_t begin = millis();
 	local cal_ready --   NAU7802_Cal_Status cal_ready;
 
-	printLine(font_height, 0, "21")
 	cal_ready = NAU7802_calAFEStatus()
 	while (cal_ready == NAU7802_Cal_Status.NAU7802_CAL_IN_PROGRESS.id) do
-		printLine(font_height, 0, "22")
-		if ((timeout_ms > 0) and ((ez.Get_ms()() - begin) > timeout_ms)) then
-			break
+		str = "cal_ready = " .. tostring(cal_ready)
+		ez.SerialTx(str .. "\r\n", 80, debug_port)
+
+		if ((timeout_ms > 0) and ((ez.Get_ms() - begin) > timeout_ms)) then
+			str = "break"
+			ez.SerialTx(str .. "\r\n", 80, debug_port)
+				break
 		end
-		printLine(font_height, 0, "23")
 		ez.Wait_ms(1)
-		printLine(font_height, 0, "24")
 		cal_ready = NAU7802_calAFEStatus()
-		printLine(font_height, 0, "25")
 	end
-	printLine(font_height, 0, "26")
 
 	if (cal_ready == NAU7802_Cal_Status.NAU7802_CAL_SUCCESS.id) then
-		printLine(font_height, 0, "27")
 		return true
 	end
-	printLine(font_height, 0, "28")
 	return false
 end
 
@@ -825,20 +841,64 @@ end
 --   return (0); //Error
 -- }
 function NAU7802_getReading() -- int32_t NAU7802::getReading()
-	result = ez.I2Cread(_deviceAddress,Scale_Registers.NAU7802_ADCO_B2.id,3)
+	local str
+	local result
+	local result1, result2, result3
 
-	if result ~= nil then
-		local rawValue = result[0] << 16		-- MSB
-		rawValue = rawValue | result[1] << 8	-- MidSB
-		rawValue = rawValue | result[2]			-- LSB
+	str = "NAU7802_getReading"
+	ez.SerialTx(str .. "\r\n", 80, debug_port)
 
-		local valueShifted = valueRaw << 8
+	-- result = ez.I2Cread(_deviceAddress,Scale_Registers.NAU7802_ADCO_B2.id,3)
+
+	-- result[1] = NAU7802_getRegister(Scale_Registers.NAU7802_ADCO_B2.id)
+	-- result[2] = NAU7802_getRegister(Scale_Registers.NAU7802_ADCO_B1.id)
+	-- result[3] = NAU7802_getRegister(Scale_Registers.NAU7802_ADCO_B0.id)
+
+	result1 = NAU7802_getRegister(Scale_Registers.NAU7802_ADCO_B2.id)
+	result2 = NAU7802_getRegister(Scale_Registers.NAU7802_ADCO_B1.id)
+	result3 = NAU7802_getRegister(Scale_Registers.NAU7802_ADCO_B0.id)
+
+	-- result = {result1, result2, result3}
+
+	-- str = "#result = " .. tostring(#result)
+	-- ez.SerialTx(str .. "\r\n", 80, debug_port)
+
+	-- for i = 1,3,1 do
+	-- 	str = "reslut["..tostring(i).."] = "
+	-- 	ez.SerialTx(str, 80, debug_port)
+	-- 	str = string.format("%02X", result[1])
+	-- 	-- str = string.byte(result[i]) -- .format("%02X", result[1])
+	-- 	-- str = type(result[i]) -- .format("%02X", result[1])
+	-- 	ez.SerialTx(str .. "\r\n", 80, debug_port)
+			
+	-- end
+
+	if result3 ~= nil then
+		local rawValue = 0
+
+		rawValue = rawValue | result1 << 16		-- MSB
+		rawValue = rawValue | result2 << 8	-- MidSB
+		rawValue = rawValue | result3			-- LSB
+
+		str = "rawValue = " .. string.format("%06X", rawValue)
+		ez.SerialTx(str .. "\r\n", 80, debug_port)
+
+		local valueShifted = rawValue << 8
+
+		str = "valueShifted = " .. string.format("%06X", valueShifted)
+		ez.SerialTx(str .. "\r\n", 80, debug_port)
 
 		-- shift the number back right to recover its intended magnitude
-			local value = valueRaw >> 8
+		local value = valueShifted >> 8
+
+		str = "value = " .. string.format("%06X", value)
+		ez.SerialTx(str .. "\r\n", 80, debug_port)
 
 		return value
 	end
+
+	str = "fall through"
+	ez.SerialTx(str .. "\r\n", 80, debug_port)
 
 	return 0 -- Error
 end
@@ -943,23 +1003,24 @@ end
 --   return (setRegister(registerAddress, value));
 -- }
 function NAU7802_setBit(bitNumber, registerAddress) -- bool NAU7802::setBit(uint8_t bitNumber, uint8_t registerAddress)
-	local value_init, value
-	value = 0
-	printLine(font_height, 0, "setBit 1")
-	printLine(font_height, 2, "setBit(" .. tostring(bitNumber) .. ", " .. tostring(registerAddress) .. ")")
-	printLine(font_height, 0, "setBit 2")
-	value_init = NAU7802_getRegister(registerAddress)
-	printLine(font_height, 0, "setBit 3")
-	printLine(font_height, 4, "value " .. string.format("%02X", value_init) .. " -> " .. string.format("%02X", value))
-	printLine(font_height, 0, "setBit 4")
-	printLine(font_height, 3, "value |= (1 << " .. tostring(bitNumber) .. ")")
-	printLine(font_height, 0, "setBit 5")
-	value = value_init | (1 << bitNumber)	-- Set this bit
-	printLine(font_height, 0, "setBit 6")
-	printLine(font_height, 4, "value " .. string.format("%02X", value_init) .. " -> " .. string.format("%02X", value))
-	printLine(font_height, 0, "setBit 7")
-	display_pause()
-	printLine(font_height, 0, "setBit 8")
+	local value, str
+
+	-- str = "setBit(bit=" .. tostring(bitNumber) .. ", reg=" .. tostring(registerAddress) .. ")"
+	-- ez.SerialTx(str .. "\r\n", 80, debug_port)
+
+	value = NAU7802_getRegister(registerAddress)
+
+	-- str = "value " .. string.format("%02X", value)
+	-- ez.SerialTx(str .. "\r\n", 80, debug_port)
+
+	-- str = "value |= (1 << " .. tostring(bitNumber) .. ")"
+	-- ez.SerialTx(str .. "\r\n", 80, debug_port)
+
+	value = value | (1 << bitNumber)	-- Set this bit
+
+	-- str = "value " .. string.format("%02X", value)
+	-- ez.SerialTx(str .. "\r\n", 80, debug_port)
+
 	return NAU7802_setRegister(registerAddress, value)
 end
 
@@ -971,23 +1032,23 @@ end
 --   return (setRegister(registerAddress, value));
 -- }
 function NAU7802_clearBit(bitNumber, registerAddress) -- bool NAU7802::clearBit(uint8_t bitNumber, uint8_t registerAddress)
-	local value_init, value
-	value = 0
-	printLine(font_height, 0, "clearBit 1")
-	printLine(font_height, 2, "clearBit(" .. tostring(bitNumber) .. ", " .. tostring(registerAddress) .. ")")
-	printLine(font_height, 0, "clearBit 2")
-	value_init = NAU7802_getRegister(registerAddress)
-	printLine(font_height, 0, "clearBit 3")
-	printLine(font_height, 4, "value " .. string.format("%02X", value_init) .. " -> " .. string.format("%02X", value))
-	printLine(font_height, 0, "clearBit 4")
-	printLine(font_height, 3, "value &= ~(1 << " .. tostring(bitNumber) .. ")")
-	printLine(font_height, 0, "clearBit 5")
-	value = value_init & ((~(1 << bitNumber)) & 0xff)	-- Clear this bit
-	printLine(font_height, 0, "clearBit 6")
-	printLine(font_height, 4, "value " .. string.format("%02X", value_init) .. " -> " .. string.format("%02X", value))
-	printLine(font_height, 0, "clearBit 7")
-	display_pause()
-	printLine(font_height, 0, "clearBit 8")
+	local value, str
+
+	-- str = "clearBit(bit=" .. tostring(bitNumber) .. ", reg=" .. tostring(registerAddress) .. ")"
+	-- ez.SerialTx(str .. "\r\n", 80, debug_port)
+
+	value = NAU7802_getRegister(registerAddress)
+	-- str = "value = " .. string.format("%02X", value)
+	-- ez.SerialTx(str .. "\r\n", 80, debug_port)
+
+	-- str = "value &= ~(1 << " .. tostring(bitNumber) .. ")"
+	-- ez.SerialTx(str .. "\r\n", 80, debug_port)
+
+	value = value & ((~(1 << bitNumber)) & 0xff)	-- Clear this bit
+
+	-- str = "value = " .. string.format("%02X", value)
+	-- ez.SerialTx(str .. "\r\n", 80, debug_port)
+
 	return NAU7802_setRegister(registerAddress, value)
 end
 
@@ -999,25 +1060,25 @@ end
 --   return (value);
 -- }
 function NAU7802_getBit(bitNumber, registerAddress) -- bool NAU7802::getBit(uint8_t bitNumber, uint8_t registerAddress)
-	local value_init, value
-	value = 0
-	local str
-	str = "getBit(bit=" .. tostring(bitNumber) .. ", reg=" .. tostring(registerAddress) .. ")"
-	ez.SerialTx(str .. "\r\n", 80, debug_port)
-	-- printLine(font_height, 2, "getBit(" .. tostring(bitNumber) .. ", " .. tostring(registerAddress) .. ")")
-	value_init = NAU7802_getRegister(registerAddress)
-	str = "value " .. string.format("%02X", value_init) .. " -> " .. string.format("%02X", value)
-	ez.SerialTx(str .. "\r\n", 80, debug_port)
-	str = "value &= (1 << " .. tostring(bitNumber) .. ")"
-	ez.SerialTx(str .. "\r\n", 80, debug_port)
-	-- printLine(font_height, 4, "value " .. string.format("%02X", value_init) .. " -> " .. string.format("%02X", value))
-	-- printLine(font_height, 3, "value &= (1 << " .. tostring(bitNumber) .. ")")
-	value = value_init & ((1 << bitNumber) & 0xff)	-- Clear this bit
+	local value, str
+
+	-- str = "getBit(bit=" .. tostring(bitNumber) .. ", reg=" .. tostring(registerAddress) .. ")"
+	-- ez.SerialTx(str .. "\r\n", 80, debug_port)
+
+	value = NAU7802_getRegister(registerAddress)
+
+	-- str = "value = " .. string.format("%02X", value)
+	-- ez.SerialTx(str .. "\r\n", 80, debug_port)
+
+	-- str = "value &= (1 << " .. tostring(bitNumber) .. ")"
+	-- ez.SerialTx(str .. "\r\n", 80, debug_port)
+
+	value = value & ((1 << bitNumber) & 0xff)	-- Clear this bit
 	value = value > 0 and true or false
-	str = "value " .. string.format("%02X", value_init) .. " -> " .. tostring(value)
-	ez.SerialTx(str .. "\r\n", 80, debug_port)
-	-- printLine(font_height, 4, "value " .. string.format("%02X", value_init) .. " -> " .. tostring(value))
-	display_pause()
+
+	-- str = "value = " .. tostring(value)
+	-- ez.SerialTx(str .. "\r\n", 80, debug_port)
+
 	return value
 end
 
@@ -1037,14 +1098,22 @@ end
 --   return (-1); //Error
 -- }
 function NAU7802_getRegister(registerAddress)
-	local result
+	local result, str
 	result = ez.I2Cread(_deviceAddress,registerAddress)
-	printLine(font_height, 6, string.byte(result, 1) ..  "=getRegister(" .. tostring(_deviceAddress) .. ", " .. tostring(registerAddress) .. ")" )
+
+
 	if result == nil then
-		return -1
+		result = -1
+		-- return -1
 	else
-		return string.byte(result, 1)
+		result = string.byte(result, 1)
+		-- return string.byte(result, 1)
 	end
+
+	str = "0x" .. string.format("%02X", result) ..  "=getRegister(addr=0x" .. string.format("%02X",_deviceAddress) .. ", reg=0x" .. string.format("%02X",registerAddress) .. ")"
+	ez.SerialTx(str .. "\r\n", 80, debug_port)
+
+	return result
 end
 
 -- //Send a given value to be written to given address
@@ -1059,8 +1128,10 @@ end
 --   return (true);
 -- }
 function NAU7802_setRegister(registerAddress, value)
-	local result
-	printLine(font_height, 7, "setRegister " .. tostring(_deviceAddress) .. ", " .. tostring(registerAddress) .. ", " .. tostring(value) )
+	local result, str
+	str = "setRegister(addr=0x" .. string.format("%02X",_deviceAddress) .. ", reg=0x" .. string.format("%02X",registerAddress) .. ", val=0x" .. string.format("%02X",value) ..")"
+	ez.SerialTx(str .. "\r\n", 80, debug_port)
+
 	result = ez.I2Cwrite(_deviceAddress,registerAddress, value)
 
 	-- Multi byte I2C write
@@ -1106,10 +1177,11 @@ function readPin(fn, pin) -- Show a title sequence for the program
 end
 
 function display_pause()
-	for i= 9,0,-1 do
-		printLine(font_height, 1, string.format("%d", i) )
-		ez.Wait_ms(100)
-	end
+	-- for i= 9,0,-1 do
+	-- 	printLine(font_height, 1, string.format("%d", i) )
+	-- 	ez.Wait_ms(100)
+	-- end
+	-- ez.Wait_ms(250)
 end
 
 debug_port = 0
@@ -1162,19 +1234,8 @@ while 1 do
 
 	if NAU7802_available() == true then
 		local weight = NAU7802_getReading();
-		printLine(font_height, 1, "Reading: " .. string.format("%0.4f", weight))
+		printLine(font_height, 1, "Reading: " .. string.format("%d", weight))
 	end
-
-	-- result = NAU7802_getRegister(0)
-	-- printLine(font_height, 2, "reg[0]:" .. result)
-	-- result = NAU7802_getRegister(1)
-	-- printLine(font_height, 4, "reg[1]:" .. result)
-	-- result = NAU7802_getRegister(2)
-	-- printLine(font_height, 5, "reg[2]:" .. result)
-	-- result = NAU7802_getRegister(3)
-	-- printLine(font_height, 6, "reg[3]:" .. result)
-	-- result = NAU7802_getRegister(4)
-	-- printLine(font_height, 7, "reg[4]:" .. result)
 
 	-- readPin(fn, pin)
 	-- pin = pin + 1
