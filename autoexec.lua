@@ -519,6 +519,13 @@ end
 -- {
 --   return (getBit(NAU7802_PU_CTRL_CR, NAU7802_PU_CTRL));
 -- }
+function NAU7802_available() -- bool NAU7802::available()
+	if NAU7802_getBit(PU_CTRL_Bits.NAU7802_PU_CTRL_CR.id, Scale_Registers.NAU7802_PU_CTRL.id) == 0 then
+		return false
+	end
+	return true
+end
+	
 
 -- //Calibrate analog front end of system. Returns true if CAL_ERR bit is 0 (no error)
 -- //Takes approximately 344ms to calibrate; wait up to 1000ms.
@@ -817,6 +824,24 @@ end
 
 --   return (0); //Error
 -- }
+function NAU7802_getReading() -- int32_t NAU7802::getReading()
+	result = ez.I2Cread(_deviceAddress,Scale_Registers.NAU7802_ADCO_B2.id,3)
+
+	if result ~= nil then
+		local rawValue = result[0] << 16		-- MSB
+		rawValue = rawValue | result[1] << 8	-- MidSB
+		rawValue = rawValue | result[2]			-- LSB
+
+		local valueShifted = valueRaw << 8
+
+		-- shift the number back right to recover its intended magnitude
+			local value = valueRaw >> 8
+
+		return value
+	end
+
+	return 0 -- Error
+end
 
 -- //Return the average of a given number of readings
 -- //Gives up after 1000ms so don't call this function to average 8 samples setup at 1Hz output (requires 8s)
@@ -976,23 +1001,23 @@ end
 function NAU7802_getBit(bitNumber, registerAddress) -- bool NAU7802::getBit(uint8_t bitNumber, uint8_t registerAddress)
 	local value_init, value
 	value = 0
-	printLine(font_height, 0, "getBit 1")
-	printLine(font_height, 2, "getBit(" .. tostring(bitNumber) .. ", " .. tostring(registerAddress) .. ")")
-	printLine(font_height, 0, "getBit 2")
+	local str
+	str = "getBit(bit=" .. tostring(bitNumber) .. ", reg=" .. tostring(registerAddress) .. ")"
+	ez.SerialTx(str .. "\r\n", 80, debug_port)
+	-- printLine(font_height, 2, "getBit(" .. tostring(bitNumber) .. ", " .. tostring(registerAddress) .. ")")
 	value_init = NAU7802_getRegister(registerAddress)
-	printLine(font_height, 0, "getBit 3")
-	printLine(font_height, 4, "value " .. string.format("%02X", value_init) .. " -> " .. string.format("%02X", value))
-	printLine(font_height, 0, "getBit 4")
-	printLine(font_height, 3, "value &= (1 << " .. tostring(bitNumber) .. ")")
-	printLine(font_height, 0, "getBit 5")
+	str = "value " .. string.format("%02X", value_init) .. " -> " .. string.format("%02X", value)
+	ez.SerialTx(str .. "\r\n", 80, debug_port)
+	str = "value &= (1 << " .. tostring(bitNumber) .. ")"
+	ez.SerialTx(str .. "\r\n", 80, debug_port)
+	-- printLine(font_height, 4, "value " .. string.format("%02X", value_init) .. " -> " .. string.format("%02X", value))
+	-- printLine(font_height, 3, "value &= (1 << " .. tostring(bitNumber) .. ")")
 	value = value_init & ((1 << bitNumber) & 0xff)	-- Clear this bit
-	printLine(font_height, 0, "getBit 6")
 	value = value > 0 and true or false
-	printLine(font_height, 0, "getBit 7")
-	printLine(font_height, 4, "value " .. string.format("%02X", value_init) .. " -> " .. tostring(value))
-	printLine(font_height, 0, "getBit 8")
+	str = "value " .. string.format("%02X", value_init) .. " -> " .. tostring(value)
+	ez.SerialTx(str .. "\r\n", 80, debug_port)
+	-- printLine(font_height, 4, "value " .. string.format("%02X", value_init) .. " -> " .. tostring(value))
 	display_pause()
-	printLine(font_height, 0, "getBit 9")
 	return value
 end
 
@@ -1087,6 +1112,11 @@ function display_pause()
 	end
 end
 
+debug_port = 0
+-- Event Function
+function DebugPortReceiveFunction(byte)
+	ez.SerialTx(byte, 1, debug_port)
+end
 
 fn = 14
 font_height = 240 / 8 -- = 30
@@ -1096,32 +1126,44 @@ tare = 0
 weight_max = 0
 pin = 0
 
+-- Wait 10 seconds for USB to enumerate
+-- ez.Wait_ms(10000)
+
+-- open the RS-232 port
+ez.SerialOpen("DebugPortReceiveFunction", debug_port)
+ez.SerialTx("Debug Port Open\r\n", 80, debug_port)
 
 -- Main
 titleScreen(fn)
 
+ez.SerialTx("ez.I2CopenMaster\r\n", 80, debug_port)
 result = ez.I2CopenMaster()
 printLine(font_height, 5, "I2C Open: " .. tostring(result) )
 ez.Wait_ms(250)
 
+ez.SerialTx("NAU7802_isConnected\r\n", 80, debug_port)
 result = NAU7802_isConnected()
 printLine(font_height, 6, "isConnected:" .. tostring(result) )
 ez.Wait_ms(250)
 
+ez.SerialTx("NAU7802_begin\r\n", 80, debug_port)
 result = NAU7802_begin(true) -- return boolean
 printLine(font_height, 6, "begin:" .. tostring(result) )
 ez.Wait_ms(1000)
 
-while 1 do
 
+while 1 do
 	-- printLine(font_height, 1, tostring(weight) .. " " .. tostring( (~weight) & 0xff ) )
 	-- printLine(font_height, 2, tostring(weight) .. " " .. tostring(1 << weight) )
 	-- weight = weight + 1
 
 	-- get new weight
-	weight = weight + 10.0001
+	local weight = weight + 10.0001
 
-	printLine(font_height, 1, string.format("%0.4f", weight))
+	if NAU7802_available() == true then
+		local weight = NAU7802_getReading();
+		printLine(font_height, 1, "Reading: " .. string.format("%0.4f", weight))
+	end
 
 	-- result = NAU7802_getRegister(0)
 	-- printLine(font_height, 2, "reg[0]:" .. result)
