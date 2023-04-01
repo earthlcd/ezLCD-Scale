@@ -4,19 +4,6 @@
 -- Created  03/14/2023  -  Jacob Christ
 ----------------------------------------------------------------------
 
-----------------------------------------------------------------------
--- Lua Shift Function documented here:
--- https://gist.github.com/mebens/938502
-----------------------------------------------------------------------
--- function lshift(x, by)
--- 	return x * 2 ^ by
--- end
-  
--- function rshift(x, by)
--- 	return math.floor(x / 2 ^ by)
--- end
-
-
 
 ----------------------------------------------------------------------
 -- Lua Enum Function documented here:
@@ -1194,8 +1181,8 @@ end
 
 function titleScreen(fn) -- Show a title sequence for the program
 	ez.Cls(ez.RGB(0,0,0))
-	printLine(font_height, 0, "Pull Test - MqpQ")
-	ez.Wait_ms(500)
+	-- printLine(font_height, 0, "Pull Test - MqpQ")
+	printLine(font_height, 0, "EarthLCD Scale")
 end
 
 
@@ -1214,16 +1201,32 @@ function display_pause()
 end
 
 debug_port = 0
--- Event Function
+-- Event Handelers
+-- Serial Port Event
 function DebugPortReceiveFunction(byte)
 	ez.SerialTx(byte, 1, debug_port)
 end
 
+-- Define the Button Event Handler
+function ProcessButtons(id, event)
+	-- TODO: Insert your button processing code here
+	-- Display the image which corresponds to the event
+	if id == 0 then
+		update_tare = true
+	end
+
+	ez.Button(id, event)
+	str = "id=" .. tostring(id) ..  ", event=" .. tostring(event)
+	ez.SerialTx(str .. "\r\n", 80, debug_port)
+
+end 
+
 fn = 14
 font_height = 240 / 8 -- = 30
 
-weight = 0
-tare = -37475
+weight = 0.0
+tare = 0
+update_tare = true
 weight_max = 0
 pin = 0
 
@@ -1234,44 +1237,51 @@ pin = 0
 ez.SerialOpen("DebugPortReceiveFunction", debug_port)
 ez.SerialTx("Debug Port Open\r\n", 80, debug_port)
 
+-- Setup button(s)
+-- ez.Button(0, 1, -1, -11, -1, 0, 0, 320, 240)
+ez.Button(0, 1, -1, -11, -1, 0, 0, 160, 120)
+ez.Button(1, 1, -1, -11, -1, 0, 120, 160, 120)
+ez.Button(2, 1, -1, -11, -1, 160, 0, 160, 120)
+ez.Button(3, 1, -1, -11, -1, 160, 120, 160, 120)
+
+-- Start to receive button events
+ez.SetButtonEvent("ProcessButtons")
+
 -- Main
 titleScreen(fn)
+-- ez.Wait_ms(500)
 
 ez.SerialTx("ez.I2CopenMaster\r\n", 80, debug_port)
 result = ez.I2CopenMaster()
-printLine(font_height, 5, "I2C Open: " .. tostring(result) )
+printLine(font_height, 2, "I2C Open: " .. tostring(result) )
 
 ez.SerialTx("NAU7802_isConnected\r\n", 80, debug_port)
 result = NAU7802_isConnected()
-printLine(font_height, 6, "isConnected:" .. tostring(result) )
+printLine(font_height, 3, "isConnected:" .. tostring(result) )
 
 ez.SerialTx("NAU7802_begin\r\n", 80, debug_port)
 result = NAU7802_begin(true) -- return boolean
-printLine(font_height, 6, "begin:" .. tostring(result) )
-ez.Wait_ms(1000)
-
+printLine(font_height, 4, "begin:" .. tostring(result) )
+-- ez.Wait_ms(1000)
 
 while 1 do
-	-- printLine(font_height, 1, tostring(weight) .. " " .. tostring( (~weight) & 0xff ) )
-	-- printLine(font_height, 2, tostring(weight) .. " " .. tostring(1 << weight) )
-	-- weight = weight + 1
-
 	-- get new weight
-	local weight = weight + 10.0001
-
 	if NAU7802_available() == true then
-		local weight = NAU7802_getReading() - tare
+		local raw_weight
+		raw_weight = NAU7802_getReading() 
+		-- weight = (0.9 * weight) + (0.1 * ((raw_weight - tare) + .0))
+		weight = raw_weight - tare
 		printLine(font_height, 1, "Reading: " .. string.format("%d", weight))
+
+		if update_tare == true then
+			update_tare = false
+			tare = raw_weight
+		end
+
+		str = "tare=" .. tostring(tare) .. ", weight=" .. string.format("%0.1f", weight)
+		ez.SerialTx(str .. "\r\n", 80, debug_port)
+
 	end
-
-	-- readPin(fn, pin)
-	-- pin = pin + 1
-
-	-- if pin > 100 then 
-	-- 	pin = 0 
-	-- end
-
 	-- ez.Wait_ms(25)
-
 end
 
