@@ -845,8 +845,8 @@ function NAU7802_getReading() -- int32_t NAU7802::getReading()
 	local result
 	local result1, result2, result3
 
-	str = "NAU7802_getReading"
-	ez.SerialTx(str .. "\r\n", 80, debug_port)
+	-- str = "NAU7802_getReading "
+	-- ez.SerialTx(str, 80, debug_port)
 
 	-- result = ez.I2Cread(_deviceAddress,Scale_Registers.NAU7802_ADCO_B2.id,3)
 
@@ -875,30 +875,57 @@ function NAU7802_getReading() -- int32_t NAU7802::getReading()
 
 	if result3 ~= nil then
 		local rawValue = 0
+		local bit
+		local mask
+		mask = ((1 << 23) & 0xffffffff)
 
 		rawValue = rawValue | result1 << 16		-- MSB
-		rawValue = rawValue | result2 << 8	-- MidSB
+		rawValue = rawValue | result2 << 8		-- MidSB
 		rawValue = rawValue | result3			-- LSB
 
-		str = "rawValue = " .. string.format("%06X", rawValue)
-		ez.SerialTx(str .. "\r\n", 80, debug_port)
+		-- str = "rawValue = " .. string.format("%06X", rawValue) .. " "
+		-- ez.SerialTx(str, 80, debug_port)
 
-		local valueShifted = rawValue << 8
+		-- str = "mask = " .. string.format("%06X", mask) .. " "
+		-- ez.SerialTx(str, 80, debug_port)
 
-		str = "valueShifted = " .. string.format("%06X", valueShifted)
-		ez.SerialTx(str .. "\r\n", 80, debug_port)
+		bit = (rawValue & mask) ~= 0 and true or false
+
+		-- str = "bit = " .. tostring(bit) .. " "
+		-- ez.SerialTx(str, 80, debug_port)
+
+		local valueShifted = rawValue << (8)
+
+		-- str = "valueShifted = " .. string.format("%06X", valueShifted) .. " "
+		-- ez.SerialTx(str, 80, debug_port)
+
+
+		if 	bit then
+			valueShifted = ~valueShifted
+			-- str = "~" .. string.format("%06X", valueShifted) .. " "
+			-- ez.SerialTx(str, 80, debug_port)
+			valueShifted = valueShifted + 0x100
+			-- str = "+" .. string.format("%06X", valueShifted) .. " "
+			-- ez.SerialTx(str, 80, debug_port)
+		end
 
 		-- shift the number back right to recover its intended magnitude
-		local value = valueShifted >> 8
+		valueShifted = valueShifted >> (8)
 
-		str = "value = " .. string.format("%06X", value)
-		ez.SerialTx(str .. "\r\n", 80, debug_port)
+		if 	bit then
+			valueShifted = valueShifted * -1
+			-- str = string.format("%06X", valueShifted) .. " "
+			-- ez.SerialTx(str, 80, debug_port)
+		end
 
-		return value
+		-- str = "value = " .. string.format("%08X", valueShifted)
+		-- ez.SerialTx(str .. "\r\n", 80, debug_port)
+
+		return valueShifted
 	end
 
-	str = "fall through"
-	ez.SerialTx(str .. "\r\n", 80, debug_port)
+	-- str = "fall through"
+	-- ez.SerialTx(str .. "\r\n", 80, debug_port)
 
 	return 0 -- Error
 end
@@ -1110,8 +1137,8 @@ function NAU7802_getRegister(registerAddress)
 		-- return string.byte(result, 1)
 	end
 
-	str = "0x" .. string.format("%02X", result) ..  "=getRegister(addr=0x" .. string.format("%02X",_deviceAddress) .. ", reg=0x" .. string.format("%02X",registerAddress) .. ")"
-	ez.SerialTx(str .. "\r\n", 80, debug_port)
+	-- str = "0x" .. string.format("%02X", result) ..  "=getRegister(addr=0x" .. string.format("%02X",_deviceAddress) .. ", reg=0x" .. string.format("%02X",registerAddress) .. ")"
+	-- ez.SerialTx(str .. "\r\n", 80, debug_port)
 
 	return result
 end
@@ -1128,9 +1155,11 @@ end
 --   return (true);
 -- }
 function NAU7802_setRegister(registerAddress, value)
-	local result, str
-	str = "setRegister(addr=0x" .. string.format("%02X",_deviceAddress) .. ", reg=0x" .. string.format("%02X",registerAddress) .. ", val=0x" .. string.format("%02X",value) ..")"
-	ez.SerialTx(str .. "\r\n", 80, debug_port)
+	local result
+
+	-- local str
+	-- str = "setRegister(addr=0x" .. string.format("%02X",_deviceAddress) .. ", reg=0x" .. string.format("%02X",registerAddress) .. ", val=0x" .. string.format("%02X",value) ..")"
+	-- ez.SerialTx(str .. "\r\n", 80, debug_port)
 
 	result = ez.I2Cwrite(_deviceAddress,registerAddress, value)
 
@@ -1194,7 +1223,7 @@ fn = 14
 font_height = 240 / 8 -- = 30
 
 weight = 0
-tare = 0
+tare = -37475
 weight_max = 0
 pin = 0
 
@@ -1211,12 +1240,10 @@ titleScreen(fn)
 ez.SerialTx("ez.I2CopenMaster\r\n", 80, debug_port)
 result = ez.I2CopenMaster()
 printLine(font_height, 5, "I2C Open: " .. tostring(result) )
-ez.Wait_ms(250)
 
 ez.SerialTx("NAU7802_isConnected\r\n", 80, debug_port)
 result = NAU7802_isConnected()
 printLine(font_height, 6, "isConnected:" .. tostring(result) )
-ez.Wait_ms(250)
 
 ez.SerialTx("NAU7802_begin\r\n", 80, debug_port)
 result = NAU7802_begin(true) -- return boolean
@@ -1233,7 +1260,7 @@ while 1 do
 	local weight = weight + 10.0001
 
 	if NAU7802_available() == true then
-		local weight = NAU7802_getReading();
+		local weight = NAU7802_getReading() - tare
 		printLine(font_height, 1, "Reading: " .. string.format("%d", weight))
 	end
 
@@ -1244,7 +1271,7 @@ while 1 do
 	-- 	pin = 0 
 	-- end
 
-	ez.Wait_ms(1000)
+	-- ez.Wait_ms(25)
 
 end
 
