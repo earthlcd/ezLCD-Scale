@@ -1270,7 +1270,8 @@ function ProcessButtons(id, event)
 		update_tare = true
 	end
 	if id == 1 then
-		weight_max = 0
+		update_max = true
+		weight_max = 0.0
 	end
 
 	ez.Button(id, event)
@@ -1285,6 +1286,7 @@ font_height = 240 / 8 -- = 30
 weight = 0.0
 tare = 0
 update_tare = true
+update_max = true
 weight_max = -10000.0
 pin = 0
 
@@ -1334,8 +1336,8 @@ result = NAU7802_begin(true) -- return boolean
 -- ez.BoxFill(0, 0, 50, 40, ez.RGB(0x00, 0xff, 0x00))
 -- ez.BoxFill(160, 120, 160, 120, ez.RGB(0x00, 0xff, 0xff)) 
 
-printBox(240, 7, 300, ez.RGB(0x17, 0x28, 0x15), ez.RGB(0x95, 0xb4, 0x6a), font_height, "TARE")
-printBox(230, 42, 300, ez.RGB(0x17, 0x28, 0x15), ez.RGB(0x95, 0xb4, 0x6a), font_height, "CLEAR")
+
+local graph_x = 10
 
 while 1 do
 	-- get new weight
@@ -1344,8 +1346,18 @@ while 1 do
 		raw_weight = NAU7802_getReading()
 		-- weight = (0.9 * weight) + (0.1 * ((raw_weight - tare) + .0))
 		local weight_new = (raw_weight - tare) + .0
-		weight = weight * 0.9 + weight_new * 0.1
-		if weight > weight_max then
+		weight_new = weight_new / 1000.0
+		weight = weight * 0.8 + weight_new * 0.2
+		if update_max == true then
+			ez.SetAlpha(255)
+			ez.SetXY(0, 0)
+			result = ez.PutPictFile(0, 0, "/Scale/pulltest-bg.bmp")
+			ez.SerialTx("result=".. tostring(result) .. "\r\n", 80, debug_port) -- doesn't work
+			printBox(240, 7, 300, ez.RGB(0x17, 0x28, 0x15), ez.RGB(0x95, 0xb4, 0x6a), font_height, "TARE")
+			printBox(230, 42, 300, ez.RGB(0x17, 0x28, 0x15), ez.RGB(0x95, 0xb4, 0x6a), font_height, "CLEAR")
+		end
+		if weight > weight_max or update_max == true then
+			update_max = false
 			weight_max = weight
 			printBox(10, 40, 200, ez.RGB(0xee, 0xf2, 0xe8), ez.RGB(0x3e, 0x56, 0x22), font_height, "MAX: " .. string.format("%0.1f", weight_max) .. " kg")
 		end
@@ -1353,6 +1365,12 @@ while 1 do
 		-- printBox(x1, y1, x2, fg, bg, font_height, str)
 		printBox(74, 10, 175, ez.RGB(0xee, 0xf2, 0xe8), ez.RGB(0x3e, 0x56, 0x22), font_height, string.format("%0.1f", weight))
 		printBox(175, 10, 200, ez.RGB(0xee, 0xf2, 0xe8), ez.RGB(0x3e, 0x56, 0x22), font_height, "kg")
+
+		ez.Plot( graph_x , 150 - math.floor(weight), ez.RGB(0x3e, 0x56, 0x22) )
+		graph_x = graph_x + 1
+		if graph_x >= 310 then
+			graph_x = 0
+		end
 
 		if update_tare == true then
 			update_tare = false
