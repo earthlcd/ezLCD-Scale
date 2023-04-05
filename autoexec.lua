@@ -1158,7 +1158,7 @@ function NAU7802_setRegister(registerAddress, value)
 end
 
 function printLine(font_height, line, str) -- Show a title sequence for the program
-	local x1, y1, x2, y2, bg
+	local x1, y1, x2, y2
 	-- Display Size -> 320x240 
 
 	-- Erase Old Weight
@@ -1167,22 +1167,77 @@ function printLine(font_height, line, str) -- Show a title sequence for the prog
 	x2 = 320
 	y2 = font_height * line + font_height
 
-	bg = (8 * line)
-
-	ez.BoxFill(x1,y1, x2,y2, ez.RGB(bg,bg,bg)) -- X, Y, Width, Height, Color
+	-- ez.BoxFill(x1,y1, x2,y2, ez.RGB(bg,bg,bg)) -- X, Y, Width, Height, Color
+	ez.BoxFill(x1,y1, x2,y2, ez.RGB(0x17, 0x28, 0x15)) -- X, Y, Width, Height, Color
 
 	-- Display Line
-	ez.SetColor(ez.RGB(0,0,255))
+	-- ez.SetColor(ez.RGB(0,0,255))
+	ez.SetColor(ez.RGB(0xee, 0xf2, 0xe8))
 	ez.SetFtFont(fn, font_height * 0.70) -- Font Number, Height, Width
 	ez.SetXY(x1, y1)
 	print(str)
 	-- ez.Wait_ms(200)
 end
 
+function printBox(x1, y1, x2, fg, bg, font_height, str) -- Show a title sequence for the program
+	-- Erase Old Weight
+	local y2 = y1 + font_height
+
+	ez.BoxFill(x1,y1, x2,y2, bg) -- X, Y, Width, Height, Color
+
+	-- Display Line
+	ez.SetColor(fg)
+	ez.SetFtFont(fn, font_height * 0.70) -- Font Number, Height, Width
+	ez.SetXY(x1, y1)
+	print(str)
+end
+
 function titleScreen(fn) -- Show a title sequence for the program
+	local result
+
 	ez.Cls(ez.RGB(0,0,0))
-	-- printLine(font_height, 0, "Pull Test - MqpQ")
-	printLine(font_height, 0, "EarthLCD Scale")
+
+	-- ez.SetAlpha(255)
+	-- ez.SetXY(44,55)
+	-- result = ez.PutPictFile(2, 3, "/Scale/circle-alpha.bmp")
+	-- ez.SerialTx("result=".. tostring(result) .. "\r\n", 80, debug_port) -- doesn't work
+	-- printLine(font_height, 6, "/Scale/circle-alpha.bmp")
+	-- ez.Wait_ms(2000)
+
+	-- ez.SetAlpha(128)
+	-- ez.SetXY(11,12)
+	-- result = ez.PutPictFile(2, 3, "/Scale/pulltest-bg.bmp")
+	-- ez.SerialTx("result=".. tostring(result) .. "\r\n", 80, debug_port) -- doesn't work
+	-- printLine(font_height, 6, "/Scale/pulltest-bg.bmp")
+	-- ez.Wait_ms(2000)
+
+	-- ez.SetAlpha(64)
+	-- ez.SetXY(66,77)
+	-- result = ez.PutPictFile(2, 3, "/Scale/circle-alpha.bmp")
+	-- ez.SerialTx("result=".. tostring(result) .. "\r\n", 80, debug_port) -- doesn't work
+	-- printLine(font_height, 6, "/Scale/circle-alpha.bmp")
+	-- ez.SetAlpha(255)
+	-- ez.Wait_ms(2000)
+
+	-- ez.SetAlpha(32)
+	-- ez.SetXY(44,55)
+	-- result = ez.PutPictFile(2, 3, "/Scale/pulltest-bg1.bmp")
+	-- ez.SerialTx("result=".. tostring(result) .. "\r\n", 80, debug_port) -- doesn't work
+	-- printLine(font_height, 6, "/Scale/pulltest-bg1.bmp")
+	-- ez.Wait_ms(2000)
+
+	-- ez.PutPictFile(0, 0, "Images/EarthLCD_320x240_Splash.jpeg") -- doesn't work
+	-- ez.PutPictFile(0, 0, "/Images/EarthLCD_320x240_Splash.jpeg") -- doesn't work
+	-- result = ez.PutPictFile("/Images/EarthLCD_320x240_Splash.jpeg") -- doesn't work
+	-- ez.PutPictNo(8)
+
+	ez.SetAlpha(255)
+	ez.SetXY(0, 0)
+	result = ez.PutPictFile(0, 0, "/Scale/pulltest-bg.bmp")
+	ez.SerialTx("result=".. tostring(result) .. "\r\n", 80, debug_port) -- doesn't work
+
+	-- ez.PutPictNo(100) 
+	-- printLine(font_height, 0, "EarthLCD Load Cell Scale")
 end
 
 
@@ -1214,6 +1269,9 @@ function ProcessButtons(id, event)
 	if id == 0 then
 		update_tare = true
 	end
+	if id == 1 then
+		weight_max = 0
+	end
 
 	ez.Button(id, event)
 	str = "id=" .. tostring(id) ..  ", event=" .. tostring(event)
@@ -1227,7 +1285,7 @@ font_height = 240 / 8 -- = 30
 weight = 0.0
 tare = 0
 update_tare = true
-weight_max = 0
+weight_max = -10000.0
 pin = 0
 
 -- Wait 10 seconds for USB to enumerate
@@ -1235,14 +1293,21 @@ pin = 0
 
 -- open the RS-232 port
 ez.SerialOpen("DebugPortReceiveFunction", debug_port)
-ez.SerialTx("Debug Port Open\r\n", 80, debug_port)
+ez.SerialTx("**********************************************************************\r\n", 80, debug_port)
+ez.SerialTx("* EarthLCD Load Cell Scale\r\n", 80, debug_port)
+ez.SerialTx("**********************************************************************\r\n", 80, debug_port)
+ez.SerialTx(ez.FirmVer .. "\r\n", 80, debug_port)
+ez.SerialTx(ez.LuaVer .. "\r\n", 80, debug_port)
+ez.SerialTx("S/N: " .. ez.SerialNo .. "\r\n", 80, debug_port)
+ez.SerialTx(ez.Width .. "x" .. ez.Height .. "\r\n", 80, debug_port)
 
 -- Setup button(s)
 -- ez.Button(0, 1, -1, -11, -1, 0, 0, 320, 240)
-ez.Button(0, 1, -1, -11, -1, 0, 0, 160, 120)
-ez.Button(1, 1, -1, -11, -1, 0, 120, 160, 120)
-ez.Button(2, 1, -1, -11, -1, 160, 0, 160, 120)
+ez.Button(0, 1, -1, -11, -1, 210,  0, 110, 35)
+ez.Button(1, 1, -1, -11, -1, 210, 35, 110, 35)
+ez.Button(2, 1, -1, -11, -1, 0, 0, 50, 40)
 ez.Button(3, 1, -1, -11, -1, 160, 120, 160, 120)
+
 
 -- Start to receive button events
 ez.SetButtonEvent("ProcessButtons")
@@ -1253,33 +1318,49 @@ titleScreen(fn)
 
 ez.SerialTx("ez.I2CopenMaster\r\n", 80, debug_port)
 result = ez.I2CopenMaster()
-printLine(font_height, 2, "I2C Open: " .. tostring(result) )
+-- printLine(font_height, 5, "I2C Open: " .. tostring(result) )
 
 ez.SerialTx("NAU7802_isConnected\r\n", 80, debug_port)
 result = NAU7802_isConnected()
-printLine(font_height, 3, "isConnected:" .. tostring(result) )
+-- printLine(font_height, 6, "isConnected:" .. tostring(result) )
 
 ez.SerialTx("NAU7802_begin\r\n", 80, debug_port)
 result = NAU7802_begin(true) -- return boolean
-printLine(font_height, 4, "begin:" .. tostring(result) )
+-- printLine(font_height, 7, "begin:" .. tostring(result) )
 -- ez.Wait_ms(1000)
+
+-- ez.BoxFill(210,  0, 319, 35, ez.RGB(0xff, 0x00, 0x00)) -- X1, Y1, X2, Y2, Color
+-- ez.BoxFill(210, 35, 319, 70, ez.RGB(0xff, 0xff, 0x00)) 
+-- ez.BoxFill(0, 0, 50, 40, ez.RGB(0x00, 0xff, 0x00))
+-- ez.BoxFill(160, 120, 160, 120, ez.RGB(0x00, 0xff, 0xff)) 
+
+printBox(240, 7, 300, ez.RGB(0x17, 0x28, 0x15), ez.RGB(0x95, 0xb4, 0x6a), font_height, "TARE")
+printBox(230, 42, 300, ez.RGB(0x17, 0x28, 0x15), ez.RGB(0x95, 0xb4, 0x6a), font_height, "CLEAR")
 
 while 1 do
 	-- get new weight
 	if NAU7802_available() == true then
 		local raw_weight
-		raw_weight = NAU7802_getReading() 
+		raw_weight = NAU7802_getReading()
 		-- weight = (0.9 * weight) + (0.1 * ((raw_weight - tare) + .0))
-		weight = raw_weight - tare
-		printLine(font_height, 1, "Reading: " .. string.format("%d", weight))
+		local weight_new = (raw_weight - tare) + .0
+		weight = weight * 0.9 + weight_new * 0.1
+		if weight > weight_max then
+			weight_max = weight
+			printBox(10, 40, 200, ez.RGB(0xee, 0xf2, 0xe8), ez.RGB(0x3e, 0x56, 0x22), font_height, "MAX: " .. string.format("%0.1f", weight_max) .. " kg")
+		end
+		-- printLine(font_height, 1, "Reading: " .. string.format("%d", weight))
+		-- printBox(x1, y1, x2, fg, bg, font_height, str)
+		printBox(74, 10, 175, ez.RGB(0xee, 0xf2, 0xe8), ez.RGB(0x3e, 0x56, 0x22), font_height, string.format("%0.1f", weight))
+		printBox(175, 10, 200, ez.RGB(0xee, 0xf2, 0xe8), ez.RGB(0x3e, 0x56, 0x22), font_height, "kg")
 
 		if update_tare == true then
 			update_tare = false
 			tare = raw_weight
-		end
+			str = "tare=" .. tostring(tare) .. ", weight=" .. string.format("%0.1f", weight)
+			ez.SerialTx(str .. "\r\n", 80, debug_port)
+	end
 
-		str = "tare=" .. tostring(tare) .. ", weight=" .. string.format("%0.1f", weight)
-		ez.SerialTx(str .. "\r\n", 80, debug_port)
 
 	end
 	-- ez.Wait_ms(25)

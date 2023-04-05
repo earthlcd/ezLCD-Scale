@@ -1,0 +1,3007 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   width="640"
+   height="1333"
+   viewBox="0 0 640 1333"
+   xml:space="preserve"
+   lang="en-US"
+   id="svg1297"
+   sodipodi:docname="BMPfileFormat.svg"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><sodipodi:namedview
+   id="namedview1299"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   showgrid="false"
+   inkscape:zoom="1.4163541"
+   inkscape:cx="70.250795"
+   inkscape:cy="525.29237"
+   inkscape:window-width="1200"
+   inkscape:window-height="1883"
+   inkscape:window-x="0"
+   inkscape:window-y="480"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="svg1297" /><defs
+   id="defs293">
+	<style
+   type="text/css"
+   id="style284">
+		text{ font-family: Arial, Helvetica, sans-serif; }
+	</style>
+	<linearGradient
+   id="arrow-fill"
+   gradientUnits="userSpaceOnUse"
+   x1="298"
+   y1="143"
+   x2="382.5"
+   y2="143">
+		<stop
+   offset="0"
+   style="stop-color: #000080"
+   id="stop286" />
+		<stop
+   offset="0.8163"
+   style="stop-color: #9cf"
+   id="stop288" />
+		<stop
+   offset="0.8685"
+   style="stop-color: #9cf"
+   id="stop290" />
+	</linearGradient>
+</defs>
+
+<!-- Drawing title -->
+<title
+   id="title295">The Structure of the Bitmap Image File (BMP)</title>
+<text
+   id="title"
+   x="488.7705"
+   y="23.4595"
+   font-size="19.5"
+   font-weight="bold"
+   text-anchor="middle"><!--
+	--><tspan
+     x="488.7705"
+     y="23.4595"
+     id="tspan297">The Structure of</tspan><!--
+	--><tspan
+     x="488.7705"
+     y="47.4595"
+     id="tspan299">the Bitmap Image File</tspan><!--
+	--><tspan
+     x="488.7705"
+     y="71.4595"
+     id="tspan301">(BMP)</tspan><!--
+--></text>
+
+<!-- Grey lines running vertically behind file-sections ladder -->
+<g
+   id="byte-offset-columns">
+	<g
+   fill="none"
+   stroke="#c0c0c0"
+   id="g328">
+		<rect
+   x="114.5"
+   y="98.5"
+   width="40"
+   height="1234"
+   id="rect304" />
+		<rect
+   x="154.5"
+   y="98.5"
+   width="40"
+   height="1234"
+   id="rect306" />
+		<rect
+   x="194.5"
+   y="98.5"
+   width="40"
+   height="1234"
+   id="rect308" />
+		<rect
+   x="234.5"
+   y="98.5"
+   width="40"
+   height="1234"
+   id="rect310" />
+		<rect
+   x="274.5"
+   y="986.3439"
+   width="40"
+   height="346.1561"
+   id="rect312" />
+		<rect
+   x="314.5"
+   y="831.6043"
+   width="40"
+   height="500.8956"
+   id="rect314" />
+		<rect
+   x="354.5"
+   y="831.6043"
+   width="40"
+   height="500.8956"
+   id="rect316" />
+		<rect
+   x="394.5"
+   y="831.6043"
+   width="40"
+   height="500.8956"
+   id="rect318" />
+		<rect
+   x="434.5"
+   y="831.6043"
+   width="40"
+   height="500.8956"
+   id="rect320" />
+		<rect
+   x="474.5"
+   y="831.6043"
+   width="40"
+   height="500.8956"
+   id="rect322" />
+		<rect
+   x="514.5"
+   y="831.6043"
+   width="40"
+   height="500.8956"
+   id="rect324" />
+		<rect
+   x="554.5"
+   y="831.6043"
+   width="40"
+   height="500.8956"
+   id="rect326" />
+	</g>
+	<g
+   stroke="#000"
+   font-size="11.5"
+   text-anchor="middle"
+   id="g354">
+		<text
+   x="134.5696"
+   y="1330.5282"
+   id="text330">0</text>
+		<text
+   x="174.5696"
+   y="1330.5282"
+   id="text332">1</text>
+		<text
+   x="214.5696"
+   y="1330.5282"
+   id="text334">2</text>
+		<text
+   x="254.5696"
+   y="1330.5282"
+   id="text336">3</text>
+		<text
+   x="294.5696"
+   y="1330.5282"
+   id="text338">4</text>
+		<text
+   x="334.5696"
+   y="1330.5282"
+   id="text340">5</text>
+		<text
+   x="374.5696"
+   y="1330.5282"
+   id="text342">6</text>
+		<text
+   x="414.5696"
+   y="1330.5282"
+   id="text344">7</text>
+		<text
+   x="454.5696"
+   y="1330.5282"
+   id="text346">8</text>
+		<text
+   x="494.5696"
+   y="1330.5282"
+   id="text348">9</text>
+		<text
+   x="534.5696"
+   y="1330.5282"
+   id="text350">10</text>
+		<text
+   x="574.5696"
+   y="1330.5282"
+   id="text352">11</text>
+	</g>
+</g>
+<g
+   transform="rotate(-90 134.5 755.5)"
+   id="g365">
+	<rect
+   x="98.5"
+   y="735.5"
+   width="72"
+   height="40"
+   fill="#fff"
+   stroke="#000"
+   id="rect357" />
+	<text
+   x="135.3083"
+   y="750.7426"
+   font-size="13"
+   text-anchor="middle"
+   id="text363"><!--
+		--><tspan
+     x="135.3083"
+     y="750.7426"
+     font-weight="bold"
+     id="tspan359">GAP1</tspan><!--
+		--><tspan
+     x="135.3083"
+     y="766.7426"
+     font-size="11"
+     font-weight="normal"
+     id="tspan361">( optional )</tspan><!--
+	--></text>
+</g>
+<g
+   id="g377">
+	<path
+   fill="url(#arrow-fill)"
+   stroke="#000"
+   stroke-miterlimit="2"
+   d="M315.5,153v7.5L298,143l17.5-17.5v8h53V153H315.5zM376.5,132.5h-5v21h5V132.5z M382.5,132.5h-3v21h3V132.5z"
+   id="path367" />
+	<text
+   x="505.7549"
+   y="139.6396"
+   font-size="13"
+   text-anchor="middle"
+   id="text375"><!--
+		--><tspan
+     x="505.7549"
+     y="139.6396"
+     id="tspan369">Older DIB Headers can be substituted</tspan><!--
+		--><tspan
+     x="445.4549"
+     y="157.6396"
+     id="tspan371"> for the </tspan><!--
+		--><tspan
+     x="527.8330"
+     y="157.6396"
+     font-weight="bold"
+     id="tspan373">BITMAPV5HEADER</tspan><!--
+	--></text>
+</g>
+
+<g
+   transform="rotate(-90 134.5 1151.5)"
+   id="g387">
+	<rect
+   x="98.5"
+   y="1131.5"
+   width="72"
+   height="40"
+   fill="#fff"
+   stroke="#000"
+   id="rect379" />
+	<text
+   x="135.3023"
+   y="1146.7405"
+   font-size="13"
+   text-anchor="middle"
+   id="text385"><!--
+		--><tspan
+     x="135.3023"
+     y="1146.7405"
+     font-weight="bold"
+     id="tspan381">GAP2</tspan><!--
+		--><tspan
+     x="135.3023"
+     y="1162.7405"
+     font-size="11"
+     font-weight="normal"
+     id="tspan383">( optional )</tspan><!--
+	--></text>
+</g>
+<g
+   id="g393">
+	<line
+   fill="none"
+   stroke="#005400"
+   stroke-dasharray="4,3"
+   x1="15.5"
+   y1="71.5"
+   x2="117.5"
+   y2="71.5"
+   id="line389" />
+	<circle
+   fill="#005400"
+   cx="12.5"
+   cy="71.5"
+   r="3.75"
+   id="circle391" />
+</g>
+<g
+   id="g399">
+	<line
+   fill="none"
+   stroke="#000"
+   stroke-dasharray="4,3"
+   x1="28.5"
+   y1="107.5"
+   x2="114.5"
+   y2="107.5"
+   id="line395" />
+	<circle
+   cx="28.5"
+   cy="107.5"
+   r="3.75"
+   id="circle397" />
+</g>
+<g
+   id="g405">
+	<line
+   fill="none"
+   stroke="#f00"
+   stroke-dasharray="4,3"
+   x1="44.5"
+   y1="531.5"
+   x2="114.5"
+   y2="531.5"
+   id="line401" />
+	<circle
+   fill="#f00"
+   cx="44.5"
+   cy="531.5"
+   r="3.75"
+   id="circle403" />
+</g>
+<g
+   id="g413">
+	<line
+   fill="none"
+   stroke="#005400"
+   x1="12.5"
+   y1="1314.5"
+   x2="12.5"
+   y2="49.5"
+   id="line407" />
+	<polygon
+   fill="#005400"
+   points="7.5,54.5 12.5,45.5 17.5,54.5 12.5,50.7478"
+   id="polygon409" />
+	<polygon
+   fill="#005400"
+   points="17.5,1309.5 12.5,1318.5 7.5,1309.5 12.5,1313.2522"
+   id="polygon411" />
+</g>
+<g
+   id="g421">
+	<line
+   fill="none"
+   stroke="#f00"
+   x1="44.5"
+   y1="1206.5"
+   x2="44.5"
+   y2="166.5"
+   id="line415" />
+	<polygon
+   fill="#f00"
+   points="39.5,171.5 44.5,162.5 49.5,171.5 44.5,167.7478"
+   id="polygon417" />
+	<polygon
+   fill="#f00"
+   points="49.5,1201.5 44.5,1210.5 39.5,1201.5 44.5,1205.2522"
+   id="polygon419" />
+</g>
+<g
+   id="g429">
+	<line
+   fill="none"
+   stroke="#000"
+   x1="28.5"
+   y1="842.5"
+   x2="28.5"
+   y2="49.5"
+   id="line423" />
+	<polygon
+   points="23.5,54.5 28.5,45.5 33.5,54.5 28.5,50.7478"
+   id="polygon425" />
+	<polygon
+   points="33.5,836.5 28.5,845.5001 23.5,836.4999 28.5,840.2523"
+   id="polygon427" />
+</g>
+<g
+   id="g435">
+	<polyline
+   fill="none"
+   stroke="#000"
+   stroke-dasharray="4"
+   points="114.7195,549.5386 61.5,549.5386 61.5,1264.5386 91.7195,1264.5386"
+   id="polyline431" />
+	<polygon
+   points="86.4902,1259.5386 95.4902,1264.5386 86.4902,1269.5386 90.2425,1264.5386"
+   id="polygon433" />
+</g>
+<g
+   id="g483">
+	<g
+   id="g443">
+		<circle
+   fill="#00f"
+   cx="94.25"
+   cy="422.5"
+   r="3.75"
+   id="circle437" />
+		<line
+   fill="none"
+   stroke="#00f"
+   stroke-dasharray="3,2"
+   x1="96.5"
+   y1="424.5"
+   x2="111.5"
+   y2="439.5"
+   id="line439" />
+		<polygon
+   fill="#00f"
+   points="111.3668,432.3779 113.0331,440.468 104.7918,439.9125 110.1446,437.9474"
+   id="polygon441" />
+	</g>
+	<g
+   id="g451">
+		<circle
+   fill="#00f"
+   cx="94.25"
+   cy="440.5"
+   r="3.75"
+   id="circle445" />
+		<line
+   fill="none"
+   stroke="#00f"
+   stroke-dasharray="3,2"
+   x1="96.5"
+   y1="442.5"
+   x2="111.5"
+   y2="457.5"
+   id="line447" />
+		<polygon
+   fill="#00f"
+   points="111.3668,450.3779 113.0331,458.468 104.7918,457.9125 110.1446,455.9474"
+   id="polygon449" />
+	</g>
+	<g
+   id="g459">
+		<circle
+   fill="#00f"
+   cx="94.25"
+   cy="458.5"
+   r="3.75"
+   id="circle453" />
+		<line
+   fill="none"
+   stroke="#00f"
+   stroke-dasharray="3,2"
+   x1="96.5"
+   y1="460.5"
+   x2="111.5"
+   y2="475.5"
+   id="line455" />
+		<polygon
+   fill="#00f"
+   points="111.3668,468.3779 113.0331,476.468 104.7918,475.9125 110.1446,473.9474"
+   id="polygon457" />
+	</g>
+	<g
+   id="g467">
+		<circle
+   fill="#00f"
+   cx="94.25"
+   cy="476.5"
+   r="3.75"
+   id="circle461" />
+		<line
+   fill="none"
+   stroke="#00f"
+   stroke-dasharray="3,2"
+   x1="96.5"
+   y1="478.5"
+   x2="111.5"
+   y2="493.5"
+   id="line463" />
+		<polygon
+   fill="#00f"
+   points="111.3668,486.3779 113.0331,494.468 104.7918,493.9125 110.1446,491.9474"
+   id="polygon465" />
+	</g>
+	<g
+   id="g475">
+		<circle
+   fill="#00f"
+   cx="94.25"
+   cy="511.5"
+   r="3.75"
+   id="circle469" />
+		<line
+   fill="none"
+   stroke="#00f"
+   stroke-dasharray="3,2"
+   x1="96.5"
+   y1="513.5"
+   x2="111.5"
+   y2="528.5"
+   id="line471" />
+		<polygon
+   fill="#00f"
+   points="111.3668,521.3779 113.0331,529.4681 104.7918,528.9125 110.1446,526.9474"
+   id="polygon473" />
+	</g>
+	<g
+   id="g481">
+		<polyline
+   fill="none"
+   stroke="#00f"
+   stroke-dasharray="3,2"
+   points="111.375,546.625 94.25,529.5 94.25,422.5 114.25,422.5"
+   id="polyline477" />
+		<polygon
+   fill="#00f"
+   points="111.3668,539.3779 113.0331,547.4681 104.7918,546.9125 110.1446,544.9474"
+   id="polygon479" />
+	</g>
+</g>
+<g
+   id="g493">
+	<g
+   id="g489">
+		<polyline
+   fill="none"
+   stroke="#800080"
+   stroke-dasharray="4"
+   points="114.5,314.5 79.5,314.5 79.5,656.5 91.5,656.5"
+   id="polyline485" />
+		<polygon
+   fill="#800080"
+   points="85.9152,651.5 94.9153,656.5 85.9152,661.5 89.6674,656.5"
+   id="polygon487" />
+	</g>
+	<path
+   fill="none"
+   stroke="#800080"
+   stroke-width="2"
+   d="M112,709.0143h-1.4848c-2.7698,0-7.0152-1-7.0152-7.0152v-37.9622c0-5.0226-1.5-8.0298-7-8.0298c5.5,0,7-3.0071,7-8.0298v-37.9622C103.5,604,107.7454,603,110.5152,603H112"
+   id="path491" />
+</g>
+<path
+   fill="none"
+   stroke="#000"
+   stroke-width="2"
+   d="M112,1317.0143h-1.4848c-2.7698,0-7.0152-1-7.0152-7.0151v-37.9623c0-5.0226-1.5-8.0369-7-8.0369v0.0143c5.5,0,7-3.0143,7-8.037v-37.9622c0-6.0151,4.2454-7.0151,7.0152-7.0151H112"
+   id="path495" />
+<g
+   id="g505">
+	<g
+   id="g501">
+		<polyline
+   fill="none"
+   stroke="#f60"
+   stroke-dasharray="4"
+   points="119.5,260.5 70.5,260.5 70.5,971.5 91.5,971.5"
+   id="polyline497" />
+		<polygon
+   fill="#f60"
+   points="86.2707,966.5 95.2707,971.5 86.2707,976.5 90.0229,971.5"
+   id="polygon499" />
+	</g>
+	<path
+   fill="none"
+   stroke="#f60"
+   stroke-width="2"
+   d="M112,847h-1.4848c-2.7698,0-7.0152,1-6.0152,7.0152v108.9622c0,5.0226-2.5,8.0298-8,8.0298c5.5,0,8,2.9929,8,8.0298v119.9622c-1,6.0151,3.2454,7.0151,6.0152,7.0151H587.5c2.7698,0,7.0152-1,7.0152-7.0151"
+   id="path503" />
+</g>
+<g
+   id="g517">
+	<text
+   x="510"
+   y="752"
+   font-size="13.5"
+   text-anchor="middle"
+   id="text507">Pad row size to a multiple of 4 Bytes</text>
+	<rect
+   fill="none"
+   stroke="#f00"
+   stroke-dasharray="2"
+   x="400"
+   y="738"
+   width="220"
+   height="20"
+   id="rect509" />
+	<line
+   fill="none"
+   stroke="#f00"
+   stroke-dasharray="3"
+   x1="555.5"
+   y1="757.5"
+   x2="555.5"
+   y2="783.5"
+   id="line511" />
+	<polygon
+   fill="#f00"
+   points="560.5001,779.5702 555.4996,788.57 550.5,779.5701 555.4999,783.3223"
+   id="polygon513" />
+	<path
+   fill="none"
+   stroke="#f00"
+   d="M515.749,806.9999v-3.2662c0-2.3621,0.9197-6.2336,6.4519-6.2336h26.9141c4.6194,0,6.385-0.0093,6.385-6.5c0,6.4907,2.7657,6.5,7.3851,6.5h24.9141c5.5322,0,6.4519,3.8717,6.4519,6.2338V807"
+   id="path515" />
+</g>
+<g
+   id="g531">
+	<path
+   fill="none"
+   stroke="#00f"
+   stroke-width="2"
+   d="M114.6291,807l0-2.1101c0-2.5474,1.0613-6.4518,7.4452-6.4518h261.7496c5.3305,0,10.1761,0.062,10.1761-6.9381c0,7.0001,4.9992,6.9381,10.3297,6.9381h101.5957c6.3839,0.0001,7.4452,3.9046,7.4452,6.452V807"
+   id="path519" />
+	<path
+   fill="none"
+   stroke="#00f"
+   stroke-width="2"
+   d="M276.9288,574.8889h1.4848c2.7698,0,7.0152-1,7.0152-7.0152V186.9115c0-5.0227,1.5-8.0298,7-8.0298c-5.5,0-7-2.9882-7-8.0109c0-7.8709-4.2454-8.9963-7.0152-8.9963h-1.4848"
+   id="path521" />
+	<polyline
+   fill="none"
+   stroke="#00f"
+   stroke-dasharray="4,3"
+   points="274.5,170.5 315.5,170.5 315.5,179.5 300.5,179.5"
+   id="polyline523" />
+	<polyline
+   fill="none"
+   stroke="#00f"
+   stroke-dasharray="4,3"
+   points="274.5,188.5 394.5,188.5 394.5,784.5"
+   id="polyline525" />
+	<polygon
+   fill="#00f"
+   points="304.6039,184.5 295.6039,179.5 304.6039,174.5 300.8517,179.5"
+   id="polygon527" />
+	<polygon
+   fill="#00f"
+   points="399.5,780.5 394.5,789.5 389.5,780.5 394.5,784.2522"
+   id="polygon529" />
+</g>
+<g
+   id="g539">
+	<path
+   fill="none"
+   stroke="#000"
+   stroke-width="2"
+   d="M596.9848,1096.0143c2.7698,0,7.0152-1,7.0152-7.0151V978.0369c0-5.0226,1.5-8.0369,7-8.0369v0.0143c-5.5,0-7-3.0143-7-8.0369V854.0152C604,848,599.7546,847,596.9848,847"
+   id="path533" />
+	<polyline
+   fill="none"
+   stroke="#000"
+   stroke-dasharray="4,3"
+   points="274.5,206.5 629.5,206.5 629.5,970.5 617.5,970.5"
+   id="polyline535" />
+	<polygon
+   points="622.5002,975.5 613.5,970.4999 622.5002,965.5 618.7479,970.4999"
+   id="polygon537" />
+</g>
+<g
+   id="g583">
+	<text
+   x="330.4268"
+   y="721.1714"
+   transform="rotate(-90 330.4268 721.1714)"
+   font-size="13.5"
+   text-anchor="middle"
+   id="text541">Pixel Format</text>
+	<path
+   fill="none"
+   stroke="#000"
+   stroke-width="2"
+   d="M274.749,790.8897c0-2.5474,0.9197-6.4519,6.4519-6.4519l24.9141,0.0001c4.6194,0,8.385-2.4379,8.385-9.4379c0,7.0001,4.7657,9.438,9.3851,9.438l23.914,0.0001c5.5322,0,6.4519,3.9045,6.4519,6.4519"
+   id="path543" />
+	<line
+   fill="none"
+   stroke="#000"
+   stroke-dasharray="2,1"
+   x1="274.5"
+   y1="792.5"
+   x2="274.5"
+   y2="809.5"
+   id="line545" />
+	<line
+   fill="none"
+   stroke="#000"
+   stroke-dasharray="2,1"
+   x1="354.5"
+   y1="792.5"
+   x2="354.5"
+   y2="809.5"
+   id="line547" />
+	<polyline
+   fill="none"
+   stroke="#000"
+   stroke-dasharray="4,3"
+   points="274.5,224.5 315.5,224.5 315.5,770.5"
+   id="polyline549" />
+	<polygon
+   points="320.6348,765.3564 315.6348,774.3564 310.6348,765.3564 315.6348,769.1086"
+   id="polygon551" />
+	<g
+   id="g557">
+		<polyline
+   fill="none"
+   stroke="#000"
+   stroke-dasharray="4,2"
+   points="274.5,242.5 302.5,242.5 315.6348,255.6348"
+   id="polyline553" />
+		<circle
+   cx="315.6348"
+   cy="255.6348"
+   r="3.75"
+   id="circle555" />
+	</g>
+	<g
+   id="g563">
+		<polyline
+   fill="none"
+   stroke="#000"
+   stroke-dasharray="4,2"
+   points="274.5,350.5 302.5,350.5 315.6348,363.6348"
+   id="polyline559" />
+		<circle
+   cx="315.6348"
+   cy="363.6348"
+   r="3.75"
+   id="circle561" />
+	</g>
+	<g
+   id="g569">
+		<polyline
+   fill="none"
+   stroke="#000"
+   stroke-dasharray="4,2"
+   points="274.5,368.5 302.5,368.5 315.6348,381.6348"
+   id="polyline565" />
+		<circle
+   cx="315.6348"
+   cy="381.6348"
+   r="3.75"
+   id="circle567" />
+	</g>
+	<g
+   id="g575">
+		<polyline
+   fill="none"
+   stroke="#000"
+   stroke-dasharray="4,2"
+   points="274.5,386.5 302.5,386.5 315.6348,399.6348"
+   id="polyline571" />
+		<circle
+   cx="315.6348"
+   cy="399.6348"
+   r="3.75"
+   id="circle573" />
+	</g>
+	<g
+   id="g581">
+		<polyline
+   fill="none"
+   stroke="#000"
+   stroke-dasharray="4,2"
+   points="274.5,404.5 302.5,404.5 315.6348,417.6348"
+   id="polyline577" />
+		<circle
+   cx="315.6348"
+   cy="417.6348"
+   r="3.75"
+   id="circle579" />
+	</g>
+</g>
+
+<g
+   id="colour-table">
+	<g
+   id="g593">
+		<rect
+   x="114.5"
+   y="584.5"
+   width="160"
+   height="18"
+   fill="#800080"
+   stroke="#000"
+   id="rect585" />
+		<text
+   x="156.5"
+   y="598.1138"
+   font-size="13"
+   font-weight="bold"
+   fill="#fff"
+   text-anchor="middle"
+   id="text591"><!--
+			--><tspan
+     x="156.5"
+     y="598.1138"
+     id="tspan587">Color Table</tspan><!--
+			--><tspan
+     x="232"
+     y="597.6138"
+     font-size="11"
+     font-weight="normal"
+     id="tspan589"> (semi-optional)</tspan><!--
+		--></text>
+	</g>
+	<g
+   id="g599">
+		<rect
+   x="114.5"
+   y="602.5"
+   width="160"
+   height="18"
+   fill="#c9f"
+   stroke="#000"
+   id="rect595" />
+		<text
+   x="194.1543"
+   y="615.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text597">Color Definition (index 0)</text>
+	</g>
+	<g
+   id="g605">
+		<rect
+   x="114.5"
+   y="620.5"
+   width="160"
+   height="18"
+   fill="#c9f"
+   stroke="#000"
+   id="rect601" />
+		<text
+   x="194.1543"
+   y="633.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text603">Color Definition (index 1)</text>
+	</g>
+	<g
+   id="g611">
+		<rect
+   x="114.5"
+   y="638.5"
+   width="160"
+   height="18"
+   fill="#c9f"
+   stroke="#000"
+   id="rect607" />
+		<text
+   x="194.1543"
+   y="651.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text609">Color Definition (index 2)</text>
+	</g>
+	<g
+   id="g617">
+		<rect
+   x="114.5"
+   y="656.5"
+   width="160"
+   height="36"
+   fill="#c9f"
+   stroke="#000"
+   id="rect613" />
+		<path
+   d="M194.0873,667.3621l-2.75-2.75l2.75-2.75l2.75,2.75L194.0873,667.3621z M196.8373,674.6121l-2.75-2.75l-2.75,2.75l2.75,2.75L196.8373,674.6121z M196.8373,684.6121l-2.75-2.75l-2.75,2.75l2.75,2.75L196.8373,684.6121z"
+   id="path615" />
+	</g>
+	<g
+   id="g623">
+		<rect
+   x="114.5"
+   y="692.5"
+   width="160"
+   height="18"
+   fill="#c9f"
+   stroke="#000"
+   id="rect619" />
+		<text
+   x="194.1543"
+   y="705.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text621">Color Definition (index n)</text>
+	</g>
+</g>
+
+<g
+   id="dib-header">
+	<g
+   id="g634">
+		<rect
+   x="114.5"
+   y="125.5"
+   width="160"
+   height="36"
+   fill="#000080"
+   stroke="#000"
+   id="rect626" />
+		<text
+   x="194.3066"
+   y="139.1138"
+   font-size="13"
+   font-weight="bold"
+   fill="#fff"
+   text-anchor="middle"
+   id="text632"><!--
+			--><tspan
+     x="195.5"
+     y="139.1138"
+     id="tspan628">DIB Header</tspan><!--
+			--><tspan
+     x="197"
+     y="156.6138"
+     font-size="13.5"
+     id="tspan630"> BITMAPV5HEADER</tspan><!--
+		--></text>
+	</g>
+	<g
+   id="g640">
+		<rect
+   x="114.5"
+   y="161.5"
+   width="160"
+   height="18"
+   fill="#9cf"
+   stroke="#000"
+   id="rect636" />
+		<text
+   x="194.1543"
+   y="173.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text638">DIB Header Size</text>
+	</g>
+	<g
+   id="g648">
+		<rect
+   x="114.5"
+   y="179.5"
+   width="160"
+   height="18"
+   fill="#9cf"
+   stroke="#000"
+   id="rect642" />
+		<text
+   x="194.5"
+   y="191.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text646">Image Width <tspan
+   font-size="11"
+   font-weight="normal"
+   id="tspan644">(w)</tspan></text>
+	</g>
+	<g
+   id="g656">
+		<rect
+   x="114.5"
+   y="197.5"
+   width="160"
+   height="18"
+   fill="#9cf"
+   stroke="#000"
+   id="rect650" />
+		<text
+   x="194.5"
+   y="210"
+   font-size="13"
+   text-anchor="middle"
+   id="text654">Image Height <tspan
+   font-size="11"
+   font-weight="normal"
+   id="tspan652">(h)</tspan></text>
+	</g>
+	<g
+   id="g662">
+		<rect
+   x="114.5"
+   y="215.5"
+   width="79"
+   height="18"
+   fill="#9cf"
+   stroke="#000"
+   id="rect658" />
+		<text
+   x="155.1543"
+   y="227.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text660">Planes</text>
+	</g>
+	<g
+   id="g668">
+		<rect
+   x="193.5"
+   y="215.5"
+   width="81"
+   height="18"
+   fill="#9cf"
+   stroke="#000"
+   id="rect664" />
+		<text
+   x="234.1543"
+   y="227.8062"
+   font-size="13.5"
+   text-anchor="middle"
+   id="text666">Bits per Pixel</text>
+	</g>
+	<g
+   id="g674">
+		<rect
+   x="114.5"
+   y="233.5"
+   width="160"
+   height="18"
+   fill="#9cf"
+   stroke="#000"
+   id="rect670" />
+		<text
+   x="195.1543"
+   y="245.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text672">Compression</text>
+	</g>
+	<g
+   id="g680">
+		<rect
+   x="114.5"
+   y="251.5"
+   width="160"
+   height="18"
+   fill="#9cf"
+   stroke="#000"
+   id="rect676" />
+		<text
+   x="194.1543"
+   y="263.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text678">Image Size</text>
+	</g>
+	<g
+   id="g686">
+		<rect
+   x="114.5"
+   y="269.5"
+   width="160"
+   height="18"
+   fill="#9cf"
+   stroke="#000"
+   id="rect682" />
+		<text
+   x="194"
+   y="281.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text684">X Pixels Per Meter</text>
+	</g>
+	<g
+   id="g692">
+		<rect
+   x="114.5"
+   y="287.5"
+   width="160"
+   height="18"
+   fill="#9cf"
+   stroke="#000"
+   id="rect688" />
+		<text
+   x="194"
+   y="299.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text690">Y Pixels Per Meter</text>
+	</g>
+	<g
+   id="g698">
+		<rect
+   x="114.5"
+   y="305.5"
+   width="160"
+   height="18"
+   fill="#9cf"
+   stroke="#000"
+   id="rect694" />
+		<text
+   x="194.1543"
+   y="317.8062"
+   font-size="12"
+   text-anchor="middle"
+   id="text696">Colors in Color Table</text>
+	</g>
+	<g
+   id="g704">
+		<rect
+   x="114.5"
+   y="323.5"
+   width="160"
+   height="18"
+   fill="#9cf"
+   stroke="#000"
+   id="rect700" />
+		<text
+   x="195.1543"
+   y="335.8062"
+   font-size="12"
+   text-anchor="middle"
+   id="text702">Important Color Count</text>
+	</g>
+	<g
+   id="g710">
+		<rect
+   x="114.5"
+   y="341.5"
+   width="160"
+   height="18"
+   fill="#9cf"
+   stroke="#000"
+   id="rect706" />
+		<text
+   x="194.1543"
+   y="353.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text708">Red channel bitmask</text>
+	</g>
+	<g
+   id="g716">
+		<rect
+   x="114.5"
+   y="359.5"
+   width="160"
+   height="18"
+   fill="#9cf"
+   stroke="#000"
+   id="rect712" />
+		<text
+   x="194.1543"
+   y="371.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text714">Green channel bitmask</text>
+	</g>
+	<g
+   id="g722">
+		<rect
+   x="114.5"
+   y="377.5"
+   width="160"
+   height="18"
+   fill="#9cf"
+   stroke="#000"
+   id="rect718" />
+		<text
+   x="194.1543"
+   y="389.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text720">Blue channel bitmask</text>
+	</g>
+	<g
+   id="g728">
+		<rect
+   x="114.5"
+   y="395.5"
+   width="160"
+   height="18"
+   fill="#9cf"
+   stroke="#000"
+   id="rect724" />
+		<text
+   x="194.1543"
+   y="407.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text726">Alpha channel bitmask</text>
+	</g>
+	<g
+   id="g734">
+		<rect
+   x="114.5"
+   y="413.5"
+   width="160"
+   height="18"
+   fill="#9cf"
+   stroke="#000"
+   id="rect730" />
+		<text
+   x="194.1543"
+   y="425.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text732">Color Space Type</text>
+	</g>
+	<g
+   id="g742">
+		<rect
+   x="114.5"
+   y="431.5"
+   width="160"
+   height="18"
+   fill="#9cf"
+   stroke="#000"
+   id="rect736" />
+		<rect
+   x="116.5"
+   y="433.5"
+   width="156"
+   height="14"
+   fill="none"
+   stroke="#f00"
+   id="rect738" />
+		<text
+   x="194.1543"
+   y="443.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text740">Color Space Endpoints</text>
+	</g>
+	<g
+   id="g748">
+		<rect
+   x="114.5"
+   y="449.5"
+   width="160"
+   height="18"
+   fill="#9cf"
+   stroke="#000"
+   id="rect744" />
+		<text
+   x="194.1543"
+   y="461.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text746">Gamma for Red channel</text>
+	</g>
+	<g
+   id="g754">
+		<rect
+   x="114.5"
+   y="467.5"
+   width="160"
+   height="18"
+   fill="#9cf"
+   stroke="#000"
+   id="rect750" />
+		<text
+   x="194.1543"
+   y="479.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text752">Gamma for Green channel</text>
+	</g>
+	<g
+   id="g760">
+		<rect
+   x="114.5"
+   y="485.5"
+   width="160"
+   height="18"
+   fill="#9cf"
+   stroke="#000"
+   id="rect756" />
+		<text
+   x="195.1543"
+   y="497.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text758">Gamma for Blue channel</text>
+	</g>
+	<g
+   id="g766">
+		<rect
+   x="114.5"
+   y="503.5"
+   width="160"
+   height="18"
+   fill="#9cf"
+   stroke="#000"
+   id="rect762" />
+		<text
+   x="195.1543"
+   y="515.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text764">Intent</text>
+	</g>
+	<g
+   id="g772">
+		<rect
+   x="114.5"
+   y="521.5"
+   width="160"
+   height="18"
+   fill="#9cf"
+   stroke="#000"
+   id="rect768" />
+		<text
+   x="194.1543"
+   y="533.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text770">ICC Profile Data</text>
+	</g>
+	<g
+   id="g778">
+		<rect
+   x="114.5"
+   y="539.5"
+   width="160"
+   height="18"
+   fill="#9cf"
+   stroke="#000"
+   id="rect774" />
+		<text
+   x="194.1543"
+   y="551.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text776">ICC Profile Size</text>
+	</g>
+	<g
+   id="g784">
+		<rect
+   x="114.5"
+   y="557.5"
+   width="160"
+   height="18"
+   fill="#9cf"
+   stroke="#000"
+   id="rect780" />
+		<text
+   x="194.1543"
+   y="569.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text782">Reserved</text>
+	</g>
+</g>
+<g
+   id="g835">
+	<g
+   id="g803">
+		<rect
+   x="114.5"
+   y="8.5"
+   width="160"
+   height="36"
+   fill="#030"
+   stroke="#000"
+   id="rect787" />
+		<text
+   x="194.3066"
+   y="22.1138"
+   font-size="13"
+   font-weight="bold"
+   fill="#fff"
+   text-anchor="middle"
+   id="text801"><!--
+			--><tspan
+     x="156.7232"
+     y="22.1138"
+     id="tspan789">Bitmap</tspan><!--
+			--><tspan
+     x="240.0747"
+     y="22.1138"
+     id="tspan791"> </tspan><!--
+			--><tspan
+     x="194.6976"
+     y="22.1138"
+     id="tspan793">File</tspan><!--
+			--><tspan
+     x="266.9619"
+     y="22.1138"
+     id="tspan795"> </tspan><!--
+			--><tspan
+     x="233.2181"
+     y="22.1138"
+     id="tspan797">Header</tspan><!--
+			--><tspan
+     x="195.3066"
+     y="39.6138"
+     font-size="13"
+     id="tspan799"> BITMAPFILEHEADER</tspan><!--
+		--></text>
+	</g>
+	<g
+   id="g809">
+		<rect
+   x="114.5"
+   y="44.5"
+   width="80"
+   height="18"
+   fill="#cfc"
+   stroke="#000"
+   id="rect805" />
+		<text
+   x="155.1543"
+   y="57.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text807">Signature</text>
+	</g>
+	<g
+   id="g815">
+		<rect
+   x="114.5"
+   y="62.5"
+   width="160"
+   height="18"
+   fill="#cfc"
+   stroke="#000"
+   id="rect811" />
+		<text
+   x="194.1543"
+   y="76.8062"
+   font-size="14"
+   text-anchor="middle"
+   id="text813">File Size</text>
+	</g>
+	<g
+   id="g821">
+		<rect
+   x="114.5"
+   y="80.5"
+   width="80"
+   height="18"
+   fill="#cfc"
+   stroke="#000"
+   id="rect817" />
+		<text
+   x="155.1543"
+   y="94.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text819">Reserved1</text>
+	</g>
+	<g
+   id="g827">
+		<rect
+   x="194.5"
+   y="80.5"
+   width="80"
+   height="18"
+   fill="#cfc"
+   stroke="#000"
+   id="rect823" />
+		<text
+   x="235.1543"
+   y="94.8062"
+   font-size="13"
+   text-anchor="middle"
+   id="text825">Reserved2</text>
+	</g>
+	<g
+   id="g833">
+		<rect
+   x="114.5"
+   y="98.5"
+   width="160"
+   height="18"
+   fill="#cfc"
+   stroke="#000"
+   id="rect829" />
+		<text
+   x="196.1543"
+   y="111.8062"
+   font-size="13.5"
+   text-anchor="middle"
+   id="text831">File Offset to PixelArray</text>
+	</g>
+</g>
+<g
+   id="g887">
+	<g
+   id="g853">
+		<text
+   x="400.751"
+   y="441.6104"
+   text-anchor="start"
+   font-size="13"
+   id="text843"><!--
+			--><tspan
+     x="400.751"
+     y="441.6104"
+     font-weight="bold"
+     id="tspan837">Note:</tspan><!--
+			--><tspan
+     x="433.9688"
+     y="441.6104"
+     id="tspan839"> The size of</tspan><!--
+			--><tspan
+     x="400.751"
+     y="460.6104"
+     id="tspan841">Color Space Endpoints is 36 Bytes</tspan><!--
+		--></text>
+		<text
+   x="402.6777"
+   y="478.5117"
+   text-anchor="start"
+   font-size="10.5"
+   id="text851"><!--
+			--><tspan
+     x="402.6777"
+     y="478.5117"
+     id="tspan845">( This diagram does not depict it proportionally.</tspan><!--
+			--><tspan
+     x="402.6777"
+     y="490.5117"
+     id="tspan847">   It is drawn in that manner only to save</tspan><!--
+			--><tspan
+     x="402.6777"
+     y="502.5117"
+     id="tspan849">   vertical space. )</tspan><!--
+		--></text>
+	</g>
+	<text
+   x="400.751"
+   y="597.6104"
+   text-anchor="start"
+   font-size="13"
+   id="text869"><!--
+		--><tspan
+     x="400.751"
+     y="597.6104"
+     font-weight="bold"
+     id="tspan855">Note:</tspan><!--
+		--><tspan
+     x="433.9688"
+     y="597.6104"
+     id="tspan857"> The presence of the Color Table</tspan><!--
+		--><tspan
+     x="400.751"
+     y="615.6104"
+     id="tspan859">is mandatory when </tspan><!--
+		--><tspan
+     x="514.9024"
+     y="615.6104"
+     id="tspan861">Bits </tspan><!--
+		--><tspan
+     x="540.7051"
+     y="615.6104"
+     id="tspan863">per Pixel</tspan><!--
+		--><tspan
+     x="595.6758"
+     y="615.6104"
+     id="tspan865">≤</tspan><!--
+		--><tspan
+     x="607.3321"
+     y="615.6104"
+     id="tspan867">8</tspan><!--
+	--></text>
+	<text
+   x="400.751"
+   y="669.6104"
+   text-anchor="start"
+   font-size="13"
+   id="text885"><!--
+		--><tspan
+     x="400.751"
+     y="669.6104"
+     font-weight="bold"
+     id="tspan871">Note:</tspan><!--
+		--><tspan
+     x="433.9688"
+     y="669.6104"
+     id="tspan873"> The size of Color Table Entries</tspan><!--
+		--><tspan
+     x="400.751"
+     y="687.6104"
+     id="tspan875">is 3 Bytes if </tspan><!--
+		--><tspan
+     x="474.4688"
+     y="687.6104"
+     font-weight="bold"
+     id="tspan877">BITMAPCOREHEADER</tspan><!--
+		--><tspan
+     x="400.751"
+     y="705.6104"
+     id="tspan879">is substituted for </tspan><!--
+		--><tspan
+     x="502.2305"
+     y="705.6104"
+     font-weight="bold"
+     id="tspan881">BITMAPV5HEADER</tspan><!--
+		--><tspan
+     x="619.5781"
+     y="705.6104"
+     id="tspan883">.</tspan><!--
+	--></text>
+</g>
+
+<g
+   id="colour-profile">
+	<g
+   id="profile-sidenotes">
+		<rect
+   x="274.5"
+   y="1192.5"
+   width="320"
+   height="126"
+   fill="#fff"
+   stroke="#c0c0c0"
+   id="rect889" />
+		<text
+   x="436.5"
+   y="1205.9824"
+   font-size="13"
+   text-anchor="middle"
+   id="text897"><!--
+			--><tspan
+   font-weight="bold"
+   id="tspan891">Note</tspan>: The ICC Color Profile may be present only when <!--
+			--><tspan
+   x="432.9492"
+   y="1222.9824"
+   id="tspan895">the <tspan
+   font-weight="bold"
+   id="tspan893">BITMAPV5HEADER</tspan> is used.</tspan>
+		</text>
+		<text
+   x="280.4551"
+   y="1273.3184"
+   font-size="13"
+   text-anchor="start"
+   id="text905"><!--
+			--><tspan
+     x="280.4551"
+     y="1273.3184"
+     id="tspan899">( This diagram wrongly suggests that the size of</tspan><!--
+			--><tspan
+     x="280.4551"
+     y="1290.3184"
+     id="tspan901">Color Profile must be a multiple of 4 Bytes.</tspan><!--
+			--><tspan
+     x="280.4551"
+     y="1307.3184"
+     id="tspan903">It is drawn in that manner only to save vertical space.)</tspan><!--
+		--></text>
+	</g>
+	<g
+   id="g914">
+		<rect
+   x="114.5"
+   y="1192.5"
+   width="160"
+   height="18"
+   fill="#333"
+   stroke="#000"
+   id="rect908" />
+		<text
+   x="194.8174"
+   y="1207.0103"
+   font-size="13"
+   font-weight="bold"
+   fill="#fff"
+   text-anchor="middle"
+   id="text912">ICC Color Profile<tspan
+   font-size="11"
+   font-weight="normal"
+   id="tspan910"> (optional)</tspan></text>
+	</g>
+	<g
+   id="g934">
+		<rect
+   x="114.5"
+   y="1210.5"
+   width="160"
+   height="108"
+   fill="#c0c0c0"
+   stroke="#000"
+   id="rect916" />
+		<text
+   x="194.3516"
+   y="1226.0977"
+   font-size="13"
+   text-anchor="middle"
+   id="text932"><!--
+			--><tspan
+     x="194.3516"
+     y="1226.0977"
+     id="tspan920"><tspan
+   font-weight="bold"
+   id="tspan918">Embedded</tspan>, variable size</tspan><!--
+			--><tspan
+     x="194.3516"
+     y="1243.0977"
+     id="tspan922">ICC Color Profile Data.</tspan><!--
+			--><tspan
+     x="195.3516"
+     y="1277.0977"
+     id="tspan926">( or path to a <tspan
+   font-weight="bold"
+   id="tspan924">linked</tspan> file</tspan><!--
+			--><tspan
+     x="195.3516"
+     y="1294.0977"
+     id="tspan928">containing</tspan><!--
+			--><tspan
+     x="195.3516"
+     y="1311.0977"
+     id="tspan930">ICC Color Profile Data )</tspan><!--
+		--></text>
+	</g>
+</g>
+
+<g
+   id="byte-offset"
+   fill="none"
+   stroke="#000">
+	<text
+   x="111.5696"
+   y="1329.5282"
+   fill="#000"
+   stroke="none"
+   font-weight="bold"
+   font-size="11.5"
+   text-anchor="end"
+   id="text937">Byte offset:</text>
+	<g
+   id="g945">
+		<line
+   x1="0"
+   y1="1318.5"
+   x2="1.5"
+   y2="1318.5"
+   id="line939" />
+		<line
+   x1="3.0205"
+   y1="1318.5"
+   x2="111.7397"
+   y2="1318.5"
+   stroke-dasharray="3.0411,1.5205"
+   id="line941" />
+		<line
+   x1="112.5"
+   y1="1318.5"
+   x2="114"
+   y2="1318.5"
+   id="line943" />
+	</g>
+	<g
+   id="g953">
+		<line
+   x1="0"
+   y1="44.5"
+   x2="1.625"
+   y2="44.5"
+   id="line947" />
+		<line
+   x1="2.6183"
+   y1="44.5"
+   x2="111.8784"
+   y2="44.5"
+   stroke-dasharray="3.2281,0.9933"
+   id="line949" />
+		<line
+   x1="112.375"
+   y1="44.5"
+   x2="114"
+   y2="44.5"
+   id="line951" />
+	</g>
+	<line
+   stroke-dasharray="3.25,1"
+   x1="36"
+   y1="161.5"
+   x2="114"
+   y2="161.5"
+   id="line955" />
+	<line
+   stroke-dasharray="3,1"
+   x1="20"
+   y1="845.5618"
+   x2="114"
+   y2="845.5618"
+   id="line957" />
+	<line
+   stroke-dasharray="3,1"
+   x1="36"
+   y1="1210.5619"
+   x2="114"
+   y2="1210.5619"
+   id="line959" />
+</g>
+
+<g
+   id="image-data">
+	<g
+   id="header">
+		<rect
+   x="114.5"
+   y="809.5"
+   stroke="#000"
+   width="480"
+   height="36"
+   id="rect962" />
+		<text
+   x="355.0906"
+   y="823.2141"
+   font-size="13"
+   font-weight="bold"
+   fill="#fff"
+   text-anchor="middle"
+   id="text968"><!--
+			--><tspan
+     x="355.0906"
+     y="823.2141"
+     id="tspan964">Image Data</tspan><!--
+			--><tspan
+     x="355.0906"
+     y="841.2141"
+     id="tspan966">PixelArray[x,y]</tspan><!--
+		--></text>
+	</g>
+	<g
+   id="rows"
+   fill="#ff9"
+   stroke="#000">
+		<g
+   id="row-continuation">
+			<rect
+   x="114.5"
+   y="881.5"
+   width="480"
+   height="36"
+   id="rect971" />
+			<path
+   d="M393.5,893.25l-2.75-2.75l2.75-2.75l2.75,2.75L393.5,893.25z M396.25,900.5l-2.75-2.75l-2.75,2.75l2.75,2.75L396.25,900.5z M396.25,910.5l-2.75-2.75l-2.75,2.75l2.75,2.75L396.25,910.5z"
+   id="path973" />
+		</g>
+		<g
+   id="g988">
+			<rect
+   x="114.5"
+   y="917.5"
+   width="80"
+   height="18"
+   id="rect976" />
+			<rect
+   x="194.5"
+   y="917.5"
+   width="80"
+   height="18"
+   id="rect978" />
+			<rect
+   x="274.5"
+   y="917.5"
+   width="80"
+   height="18"
+   id="rect980" />
+			<rect
+   x="354.5"
+   y="917.5"
+   width="80"
+   height="18"
+   id="rect982" />
+			<rect
+   x="434.5"
+   y="917.5"
+   width="80"
+   height="18"
+   id="rect984" />
+			<rect
+   x="514.5"
+   y="917.5"
+   width="80"
+   height="18"
+   id="rect986" />
+		</g>
+		<g
+   id="g1002">
+			<rect
+   x="114.5"
+   y="935.5"
+   width="80"
+   height="18"
+   id="rect990" />
+			<rect
+   x="194.5"
+   y="935.5"
+   width="80"
+   height="18"
+   id="rect992" />
+			<rect
+   x="274.5"
+   y="935.5"
+   width="80"
+   height="18"
+   id="rect994" />
+			<rect
+   x="354.5"
+   y="935.5"
+   width="80"
+   height="18"
+   id="rect996" />
+			<rect
+   x="434.5"
+   y="935.5"
+   width="80"
+   height="18"
+   id="rect998" />
+			<rect
+   x="514.5"
+   y="935.5"
+   width="80"
+   height="18"
+   id="rect1000" />
+		</g>
+		<g
+   id="g1016">
+			<rect
+   x="114.5"
+   y="845.5"
+   width="80"
+   height="18"
+   id="rect1004" />
+			<rect
+   x="194.5"
+   y="845.5"
+   width="80"
+   height="18"
+   id="rect1006" />
+			<rect
+   x="274.5"
+   y="845.5"
+   width="80"
+   height="18"
+   id="rect1008" />
+			<rect
+   x="354.5"
+   y="845.5"
+   width="80"
+   height="18"
+   id="rect1010" />
+			<rect
+   x="434.5"
+   y="845.5"
+   width="80"
+   height="18"
+   id="rect1012" />
+			<rect
+   x="514.5"
+   y="845.5"
+   width="80"
+   height="18"
+   id="rect1014" />
+		</g>
+		<g
+   id="g1030">
+			<rect
+   x="114.5"
+   y="863.5"
+   width="80"
+   height="18"
+   id="rect1018" />
+			<rect
+   x="194.5"
+   y="863.5"
+   width="80"
+   height="18"
+   id="rect1020" />
+			<rect
+   x="274.5"
+   y="863.5"
+   width="80"
+   height="18"
+   id="rect1022" />
+			<rect
+   x="354.5"
+   y="863.5"
+   width="80"
+   height="18"
+   id="rect1024" />
+			<rect
+   x="434.5"
+   y="863.5"
+   width="80"
+   height="18"
+   id="rect1026" />
+			<rect
+   x="514.5"
+   y="863.5"
+   width="80"
+   height="18"
+   id="rect1028" />
+		</g>
+		<g
+   id="g1044">
+			<rect
+   x="114.5"
+   y="953.5"
+   width="80"
+   height="18"
+   id="rect1032" />
+			<rect
+   x="194.5"
+   y="953.5"
+   width="80"
+   height="18"
+   id="rect1034" />
+			<rect
+   x="274.5"
+   y="953.5"
+   width="80"
+   height="18"
+   id="rect1036" />
+			<rect
+   x="354.5"
+   y="953.5"
+   width="80"
+   height="18"
+   id="rect1038" />
+			<rect
+   x="434.5"
+   y="953.5"
+   width="80"
+   height="18"
+   id="rect1040" />
+			<rect
+   x="514.5"
+   y="953.5"
+   width="80"
+   height="18"
+   id="rect1042" />
+		</g>
+		<g
+   id="g1058">
+			<rect
+   x="114.5"
+   y="971.5"
+   width="80"
+   height="18"
+   id="rect1046" />
+			<rect
+   x="194.5"
+   y="971.5"
+   width="80"
+   height="18"
+   id="rect1048" />
+			<rect
+   x="274.5"
+   y="971.5"
+   width="80"
+   height="18"
+   id="rect1050" />
+			<rect
+   x="354.5"
+   y="971.5"
+   width="80"
+   height="18"
+   id="rect1052" />
+			<rect
+   x="434.5"
+   y="971.5"
+   width="80"
+   height="18"
+   id="rect1054" />
+			<rect
+   x="514.5"
+   y="971.5"
+   width="80"
+   height="18"
+   id="rect1056" />
+		</g>
+		<g
+   id="g1072">
+			<rect
+   x="114.5"
+   y="989.5"
+   width="80"
+   height="18"
+   id="rect1060" />
+			<rect
+   x="194.5"
+   y="989.5"
+   width="80"
+   height="18"
+   id="rect1062" />
+			<rect
+   x="274.5"
+   y="989.5"
+   width="80"
+   height="18"
+   id="rect1064" />
+			<rect
+   x="354.5"
+   y="989.5"
+   width="80"
+   height="18"
+   id="rect1066" />
+			<rect
+   x="434.5"
+   y="989.5"
+   width="80"
+   height="18"
+   id="rect1068" />
+			<rect
+   x="514.5"
+   y="989.5"
+   width="80"
+   height="18"
+   id="rect1070" />
+		</g>
+		<g
+   id="g1086">
+			<rect
+   x="114.5"
+   y="1007.5"
+   width="80"
+   height="18"
+   id="rect1074" />
+			<rect
+   x="194.5"
+   y="1007.5"
+   width="80"
+   height="18"
+   id="rect1076" />
+			<rect
+   x="274.5"
+   y="1007.5"
+   width="80"
+   height="18"
+   id="rect1078" />
+			<rect
+   x="354.5"
+   y="1007.5"
+   width="80"
+   height="18"
+   id="rect1080" />
+			<rect
+   x="434.5"
+   y="1007.5"
+   width="80"
+   height="18"
+   id="rect1082" />
+			<rect
+   x="514.5"
+   y="1007.5"
+   width="80"
+   height="18"
+   id="rect1084" />
+		</g>
+		<g
+   id="g1100">
+			<rect
+   x="114.5"
+   y="1025.5"
+   width="80"
+   height="18"
+   id="rect1088" />
+			<rect
+   x="194.5"
+   y="1025.5"
+   width="80"
+   height="18"
+   id="rect1090" />
+			<rect
+   x="274.5"
+   y="1025.5"
+   width="80"
+   height="18"
+   id="rect1092" />
+			<rect
+   x="354.5"
+   y="1025.5"
+   width="80"
+   height="18"
+   id="rect1094" />
+			<rect
+   x="434.5"
+   y="1025.5"
+   width="80"
+   height="18"
+   id="rect1096" />
+			<rect
+   x="514.5"
+   y="1025.5"
+   width="80"
+   height="18"
+   id="rect1098" />
+		</g>
+		<g
+   id="g1114">
+			<rect
+   x="114.5"
+   y="1043.5"
+   width="80"
+   height="18"
+   id="rect1102" />
+			<rect
+   x="194.5"
+   y="1043.5"
+   width="80"
+   height="18"
+   id="rect1104" />
+			<rect
+   x="274.5"
+   y="1043.5"
+   width="80"
+   height="18"
+   id="rect1106" />
+			<rect
+   x="354.5"
+   y="1043.5"
+   width="80"
+   height="18"
+   id="rect1108" />
+			<rect
+   x="434.5"
+   y="1043.5"
+   width="80"
+   height="18"
+   id="rect1110" />
+			<rect
+   x="514.5"
+   y="1043.5"
+   width="80"
+   height="18"
+   id="rect1112" />
+		</g>
+		<g
+   id="g1128">
+			<rect
+   x="114.5"
+   y="1061.5"
+   width="80"
+   height="17"
+   id="rect1116" />
+			<rect
+   x="194.5"
+   y="1061.5"
+   width="80"
+   height="17"
+   id="rect1118" />
+			<rect
+   x="274.5"
+   y="1061.5"
+   width="80"
+   height="17"
+   id="rect1120" />
+			<rect
+   x="354.5"
+   y="1061.5"
+   width="80"
+   height="17"
+   id="rect1122" />
+			<rect
+   x="434.5"
+   y="1061.5"
+   width="80"
+   height="17"
+   id="rect1124" />
+			<rect
+   x="514.5"
+   y="1061.5"
+   width="80"
+   height="17"
+   id="rect1126" />
+		</g>
+		<g
+   id="g1142">
+			<rect
+   x="114.5"
+   y="1078.5"
+   width="80"
+   height="18"
+   id="rect1130" />
+			<rect
+   x="194.5"
+   y="1078.5"
+   width="80"
+   height="18"
+   id="rect1132" />
+			<rect
+   x="274.5"
+   y="1078.5"
+   width="80"
+   height="18"
+   id="rect1134" />
+			<rect
+   x="354.5"
+   y="1078.5"
+   width="80"
+   height="18"
+   id="rect1136" />
+			<rect
+   x="434.5"
+   y="1078.5"
+   width="80"
+   height="18"
+   id="rect1138" />
+			<rect
+   x="514.5"
+   y="1078.5"
+   width="80"
+   height="18"
+   id="rect1140" />
+		</g>
+	</g>
+	<g
+   id="columns"
+   font-size="10.5"
+   text-anchor="middle">
+		<g
+   id="column-1">
+			<text
+   x="153.5949"
+   y="857.761"
+   id="text1145">Pixel[0,h-1]</text>
+			<text
+   x="153.5949"
+   y="875.761"
+   id="text1147">Pixel[0,h-2]</text>
+			<text
+   x="153.5949"
+   y="929.761"
+   id="text1149">Pixel[0,9]</text>
+			<text
+   x="153.5949"
+   y="947.761"
+   id="text1151">Pixel[0,8]</text>
+			<text
+   x="153.5949"
+   y="965.761"
+   id="text1153">Pixel[0,7]</text>
+			<text
+   x="153.5949"
+   y="983.761"
+   id="text1155">Pixel[0,6]</text>
+			<text
+   x="153.5949"
+   y="1001.761"
+   id="text1157">Pixel[0,5]</text>
+			<text
+   x="153.5949"
+   y="1019.761"
+   id="text1159">Pixel[0,4]</text>
+			<text
+   x="153.5949"
+   y="1037.761"
+   id="text1161">Pixel[0,3]</text>
+			<text
+   x="153.5949"
+   y="1055.761"
+   id="text1163">Pixel[0,2]</text>
+			<text
+   x="153.5949"
+   y="1072.761"
+   id="text1165">Pixel[0,1]</text>
+			<text
+   x="153.5949"
+   y="1090.761"
+   id="text1167">Pixel[0,0]</text>
+		</g>
+		<g
+   id="column-2">
+			<text
+   x="233.5949"
+   y="857.761"
+   id="text1170">Pixel[1,h-1]</text>
+			<text
+   x="233.5949"
+   y="875.761"
+   id="text1172">Pixel[1,h-2]</text>
+			<text
+   x="233.5949"
+   y="929.761"
+   id="text1174">Pixel[1,9]</text>
+			<text
+   x="233.5949"
+   y="947.761"
+   id="text1176">Pixel[1,8]</text>
+			<text
+   x="233.5949"
+   y="965.761"
+   id="text1178">Pixel[1,7]</text>
+			<text
+   x="233.5949"
+   y="983.761"
+   id="text1180">Pixel[1,6]</text>
+			<text
+   x="233.5949"
+   y="1001.761"
+   id="text1182">Pixel[1,5]</text>
+			<text
+   x="233.5949"
+   y="1019.761"
+   id="text1184">Pixel[1,4]</text>
+			<text
+   x="233.5949"
+   y="1037.761"
+   id="text1186">Pixel[1,3]</text>
+			<text
+   x="233.5949"
+   y="1055.761"
+   id="text1188">Pixel[1,2]</text>
+			<text
+   x="233.5949"
+   y="1072.761"
+   id="text1190">Pixel[1,1]</text>
+			<text
+   x="233.5949"
+   y="1090.761"
+   id="text1192">Pixel[1,0]</text>
+		</g>
+		<g
+   id="column-3">
+			<text
+   x="313.5949"
+   y="857.761"
+   id="text1195">Pixel[2,h-1]</text>
+			<text
+   x="313.5949"
+   y="875.761"
+   id="text1197">Pixel[2,h-2]</text>
+			<text
+   x="313.5949"
+   y="929.761"
+   id="text1199">Pixel[2,9]</text>
+			<text
+   x="313.5949"
+   y="947.761"
+   id="text1201">Pixel[2,8]</text>
+			<text
+   x="313.5949"
+   y="965.761"
+   id="text1203">Pixel[2,7]</text>
+			<text
+   x="313.5949"
+   y="983.761"
+   id="text1205">Pixel[2,6]</text>
+			<text
+   x="313.5949"
+   y="1001.761"
+   id="text1207">Pixel[2,5]</text>
+			<text
+   x="313.5949"
+   y="1019.761"
+   id="text1209">Pixel[2,4]</text>
+			<text
+   x="313.5949"
+   y="1037.761"
+   id="text1211">Pixel[2,3]</text>
+			<text
+   x="313.5949"
+   y="1055.761"
+   id="text1213">Pixel[2,2]</text>
+			<text
+   x="313.5949"
+   y="1072.761"
+   id="text1215">Pixel[2,1]</text>
+			<text
+   x="313.5949"
+   y="1090.761"
+   id="text1217">Pixel[2,0]</text>
+		</g>
+		<g
+   id="column-4"
+   font-size="11">
+			<text
+   x="472.5949"
+   y="857.761"
+   id="text1220">Pixel[w-1,h-1]</text>
+			<text
+   x="472.5949"
+   y="875.761"
+   id="text1222">Pixel[w-1,h-2]</text>
+			<text
+   x="472.5949"
+   y="929.761"
+   id="text1224">Pixel[w-1,9]</text>
+			<text
+   x="472.5949"
+   y="947.761"
+   id="text1226">Pixel[w-1,8]</text>
+			<text
+   x="472.5949"
+   y="965.761"
+   id="text1228">Pixel[w-1,7]</text>
+			<text
+   x="472.5949"
+   y="983.761"
+   id="text1230">Pixel[w-1,6]</text>
+			<text
+   x="472.5949"
+   y="1001.761"
+   id="text1232">Pixel[w-1,5]</text>
+			<text
+   x="472.5949"
+   y="1019.761"
+   id="text1234">Pixel[w-1,4]</text>
+			<text
+   x="472.5949"
+   y="1037.761"
+   id="text1236">Pixel[w-1,3]</text>
+			<text
+   x="472.5949"
+   y="1055.761"
+   id="text1238">Pixel[w-1,2]</text>
+			<text
+   x="472.5949"
+   y="1072.761"
+   id="text1240">Pixel[w-1,1]</text>
+			<text
+   x="472.5949"
+   y="1090.761"
+   id="text1242">Pixel[w-1,0]</text>
+		</g>
+		<g
+   id="column-continuation"
+   font-size="14"
+   font-weight="bold">
+			<text
+   x="394.0"
+   y="858.761"
+   id="text1245">…</text>
+			<text
+   x="394.0"
+   y="876.761"
+   id="text1247">…</text>
+			<text
+   x="394.0"
+   y="931.761"
+   id="text1249">…</text>
+			<text
+   x="394.0"
+   y="948.761"
+   id="text1251">…</text>
+			<text
+   x="394.0"
+   y="966.761"
+   id="text1253">…</text>
+			<text
+   x="394.0"
+   y="984.761"
+   id="text1255">…</text>
+			<text
+   x="394.0"
+   y="1002.761"
+   id="text1257">…</text>
+			<text
+   x="394.0"
+   y="1020.761"
+   id="text1259">…</text>
+			<text
+   x="394.0"
+   y="1038.761"
+   id="text1261">…</text>
+			<text
+   x="394.0"
+   y="1056.761"
+   id="text1263">…</text>
+			<text
+   x="394.0"
+   y="1073.761"
+   id="text1265">…</text>
+			<text
+   x="394.0"
+   y="1091.761"
+   id="text1267">…</text>
+		</g>
+		<g
+   id="column-5">
+			<text
+   x="554.5949"
+   y="857.761"
+   id="text1270">Padding</text>
+			<text
+   x="554.5949"
+   y="875.761"
+   id="text1272">Padding</text>
+			<text
+   x="554.5949"
+   y="929.761"
+   id="text1274">Padding</text>
+			<text
+   x="554.5949"
+   y="947.761"
+   id="text1276">Padding</text>
+			<text
+   x="554.5949"
+   y="965.761"
+   id="text1278">Padding</text>
+			<text
+   x="554.5949"
+   y="983.761"
+   id="text1280">Padding</text>
+			<text
+   x="554.5949"
+   y="1001.761"
+   id="text1282">Padding</text>
+			<text
+   x="554.5949"
+   y="1019.761"
+   id="text1284">Padding</text>
+			<text
+   x="554.5949"
+   y="1037.761"
+   id="text1286">Padding</text>
+			<text
+   x="554.5949"
+   y="1055.761"
+   id="text1288">Padding</text>
+			<text
+   x="554.5949"
+   y="1072.761"
+   id="text1290">Padding</text>
+			<text
+   x="554.5949"
+   y="1090.761"
+   id="text1292">Padding</text>
+		</g>
+	</g>
+</g>
+<g
+   id="g3584"><text
+     xml:space="preserve"
+     style="font-size:14.4572px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';fill:#000000;stroke-width:1.78929"
+     x="-48.374836"
+     y="175.4518"
+     id="text1472"><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="175.4518"
+       id="tspan1582"
+       style="stroke-width:1.78929">0x0E</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="193.5233"
+       id="tspan1584"
+       style="stroke-width:1.78929">0x12</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="211.5948"
+       id="tspan1586"
+       style="stroke-width:1.78929">0x16</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="229.66629"
+       id="tspan1588"
+       style="stroke-width:1.78929">0x1A</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="247.73779"
+       id="tspan1590"
+       style="stroke-width:1.78929">0x1E</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="265.8093"
+       id="tspan1592"
+       style="stroke-width:1.78929">0x22</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="283.8808"
+       id="tspan1594"
+       style="stroke-width:1.78929">0x26</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="301.9523"
+       id="tspan1596"
+       style="stroke-width:1.78929">0x2A</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="320.0238"
+       id="tspan1598"
+       style="stroke-width:1.78929">0x2E</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="338.09531"
+       style="stroke-width:1.78929"
+       id="tspan1654">0x32</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="356.16681"
+       style="stroke-width:1.78929"
+       id="tspan1656">0x36</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="374.23831"
+       style="stroke-width:1.78929"
+       id="tspan1658">0x3A</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="392.30978"
+       style="stroke-width:1.78929"
+       id="tspan1660">0x3E</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="410.38129"
+       style="stroke-width:1.78929"
+       id="tspan1662">0x42</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="428.45279"
+       style="stroke-width:1.78929"
+       id="tspan1664">0x46</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="446.52429"
+       style="stroke-width:1.78929"
+       id="tspan1666">0x4A</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="464.59579"
+       style="stroke-width:1.78929"
+       id="tspan1668">0x4E</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="482.6673"
+       style="stroke-width:1.78929"
+       id="tspan1670">0x52</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="500.7388"
+       style="stroke-width:1.78929"
+       id="tspan1672">0x56</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="518.8103"
+       style="stroke-width:1.78929"
+       id="tspan1674">0x5A</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="536.88177"
+       style="stroke-width:1.78929"
+       id="tspan1676">0x5E</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="554.95331"
+       style="stroke-width:1.78929"
+       id="tspan1678">0x62</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="573.02478"
+       style="stroke-width:1.78929"
+       id="tspan1686">0x66</tspan></text><text
+     xml:space="preserve"
+     style="font-size:14.4572px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';fill:#000000;stroke-width:1.78929"
+     x="-48.374836"
+     y="616.42023"
+     id="text1472-2"><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="616.42023"
+       style="stroke-width:1.78929"
+       id="tspan1680-6">0x66</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="634.4917"
+       style="stroke-width:1.78929"
+       id="tspan1682-3">0x6A</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="652.56323"
+       style="stroke-width:1.78929"
+       id="tspan1684-2">0x6E</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="670.6347"
+       style="stroke-width:1.78929"
+       id="tspan2719">0x72</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="688.70624"
+       style="stroke-width:1.78929"
+       id="tspan1686-0" /></text><text
+     xml:space="preserve"
+     style="font-size:14.4572px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';fill:#000000;stroke-width:1.78929"
+     x="-48.374836"
+     y="58.52169"
+     id="text1472-3"><tspan
+       sodipodi:role="line"
+       id="tspan1470-6"
+       x="-48.374836"
+       y="58.52169"
+       style="stroke-width:1.78929">0x00</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="76.593193"
+       id="tspan1576-7"
+       style="stroke-width:1.78929">0x02</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="94.664688"
+       id="tspan1578-5"
+       style="stroke-width:1.78929">0x06</tspan><tspan
+       sodipodi:role="line"
+       x="-48.374836"
+       y="112.73619"
+       style="stroke-width:1.78929"
+       id="tspan1686-9">0x0A</tspan></text></g><text
+   xml:space="preserve"
+   style="font-size:14.4572px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';fill:#000000;stroke-width:1.78929"
+   x="-112.01231"
+   y="175.4518"
+   id="text1472-6"><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="175.4518"
+     id="tspan1584-5"
+     style="stroke-width:1.78929">0014</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="193.5233"
+     style="stroke-width:1.78929"
+     id="tspan3623">0018</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="211.5948"
+     id="tspan1586-5"
+     style="stroke-width:1.78929">0022</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="229.66629"
+     id="tspan1588-4"
+     style="stroke-width:1.78929">0026</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="247.73779"
+     id="tspan1590-7"
+     style="stroke-width:1.78929">0030</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="265.8093"
+     id="tspan1592-6"
+     style="stroke-width:1.78929">0034</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="283.8808"
+     id="tspan1594-5"
+     style="stroke-width:1.78929">0040</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="301.9523"
+     id="tspan1596-6"
+     style="stroke-width:1.78929">0044</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="320.0238"
+     id="tspan1598-9"
+     style="stroke-width:1.78929">0048</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="338.09531"
+     style="stroke-width:1.78929"
+     id="tspan1654-3">0052</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="356.16681"
+     style="stroke-width:1.78929"
+     id="tspan1656-7">0056</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="374.23831"
+     style="stroke-width:1.78929"
+     id="tspan1658-4">0060</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="392.30978"
+     style="stroke-width:1.78929"
+     id="tspan1660-5">0064</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="410.38129"
+     style="stroke-width:1.78929"
+     id="tspan1662-2">0068</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="428.45279"
+     style="stroke-width:1.78929"
+     id="tspan1664-5">0072</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="446.52429"
+     style="stroke-width:1.78929"
+     id="tspan1666-4">0076</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="464.59579"
+     style="stroke-width:1.78929"
+     id="tspan1668-7">0080</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="482.6673"
+     style="stroke-width:1.78929"
+     id="tspan1670-4">0084</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="500.7388"
+     style="stroke-width:1.78929"
+     id="tspan1672-4">0088</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="518.8103"
+     style="stroke-width:1.78929"
+     id="tspan1674-3">0092</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="536.88177"
+     style="stroke-width:1.78929"
+     id="tspan1676-0">0096</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="554.95331"
+     style="stroke-width:1.78929"
+     id="tspan1678-7">0100</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="573.02478"
+     style="stroke-width:1.78929"
+     id="tspan1686-8">0104</tspan></text><text
+   xml:space="preserve"
+   style="font-size:14.4572px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';fill:#000000;stroke-width:1.78929"
+   x="-112.01231"
+   y="616.42029"
+   id="text1472-2-6"><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="616.42029"
+     style="stroke-width:1.78929"
+     id="tspan1680-6-8">0108</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="634.49176"
+     style="stroke-width:1.78929"
+     id="tspan1682-3-8">0112</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="652.56329"
+     style="stroke-width:1.78929"
+     id="tspan1684-2-4">0116</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="670.63477"
+     style="stroke-width:1.78929"
+     id="tspan2719-3">0120</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="688.7063"
+     style="stroke-width:1.78929"
+     id="tspan1686-0-1" /></text><text
+   xml:space="preserve"
+   style="font-size:14.4572px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';fill:#000000;stroke-width:1.78929"
+   x="-112.01231"
+   y="58.52169"
+   id="text1472-3-4"><tspan
+     sodipodi:role="line"
+     id="tspan1470-6-9"
+     x="-112.01231"
+     y="58.52169"
+     style="stroke-width:1.78929">0000</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="76.593193"
+     id="tspan1576-7-2"
+     style="stroke-width:1.78929">0002</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="94.664688"
+     id="tspan1578-5-0"
+     style="stroke-width:1.78929">0006</tspan><tspan
+     sodipodi:role="line"
+     x="-112.01231"
+     y="112.73619"
+     style="stroke-width:1.78929"
+     id="tspan1686-9-6">0010</tspan></text></svg>
