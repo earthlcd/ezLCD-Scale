@@ -11,7 +11,6 @@
 -- Code here:
 -- https://github.com/sulai/Lib-Pico8/blob/master/lang.lua
 ----------------------------------------------------------------------
-
 function enum(names, offset)
 	offset=offset or 1
 	local objects = {}
@@ -44,7 +43,7 @@ end
 
 
 ----------------------------------------------------------------------
--- Sparkfun NAU7802 ported to Lua
+-- Sparkfun NAU7802 ported to Lua by Jacob Christ
 ----------------------------------------------------------------------
 
 -- I2C Connections to Sparkfun QWIIC Scale - ezLCD-5035
@@ -72,44 +71,7 @@ end
 --   https://www.sparkfun.com/products/15242
 -- */
 
--- #ifndef SparkFun_Qwiic_Scale_NAU7802_Arduino_Library_h
--- #define SparkFun_Qwiic_Scale_NAU7802_Arduino_Library_h
-
--- #include "Arduino.h"
--- #include <Wire.h>
-
 -- //Register Map
--- typedef enum
--- {
---   NAU7802_PU_CTRL = 0x00,
---   NAU7802_CTRL1,
---   NAU7802_CTRL2,
---   NAU7802_OCAL1_B2,
---   NAU7802_OCAL1_B1,
---   NAU7802_OCAL1_B0,
---   NAU7802_GCAL1_B3,
---   NAU7802_GCAL1_B2,
---   NAU7802_GCAL1_B1,
---   NAU7802_GCAL1_B0,
---   NAU7802_OCAL2_B2,
---   NAU7802_OCAL2_B1,
---   NAU7802_OCAL2_B0,
---   NAU7802_GCAL2_B3,
---   NAU7802_GCAL2_B2,
---   NAU7802_GCAL2_B1,
---   NAU7802_GCAL2_B0,
---   NAU7802_I2C_CONTROL,
---   NAU7802_ADCO_B2,
---   NAU7802_ADCO_B1,
---   NAU7802_ADCO_B0,
---   NAU7802_ADC = 0x15, //Shared ADC and OTP 32:24
---   NAU7802_OTP_B1,     //OTP 23:16 or 7:0?
---   NAU7802_OTP_B0,     //OTP 15:8
---   NAU7802_PGA = 0x1B,
---   NAU7802_PGA_PWR = 0x1C,
---   NAU7802_DEVICE_REV = 0x1F,
--- } Scale_Registers;
-
 Scale_Registers = enum( 
 {
   "NAU7802_PU_CTRL",
@@ -147,17 +109,6 @@ Scale_Registers = enum(
 }, 0 )
 
 -- //Bits within the PU_CTRL register
--- typedef enum
--- {
---   NAU7802_PU_CTRL_RR = 0,
---   NAU7802_PU_CTRL_PUD,
---   NAU7802_PU_CTRL_PUA,
---   NAU7802_PU_CTRL_PUR,
---   NAU7802_PU_CTRL_CS,
---   NAU7802_PU_CTRL_CR,
---   NAU7802_PU_CTRL_OSCS,
---   NAU7802_PU_CTRL_AVDDS,
--- } PU_CTRL_Bits;
 PU_CTRL_Bits = enum( 
 {
 	"NAU7802_PU_CTRL_RR",
@@ -181,14 +132,6 @@ PU_CTRL_Bits = enum(
 -- } CTRL1_Bits;
 
 -- //Bits within the CTRL2 register
--- typedef enum
--- {
---   NAU7802_CTRL2_CALMOD = 0,
---   NAU7802_CTRL2_CALS = 2,
---   NAU7802_CTRL2_CAL_ERROR = 3,
---   NAU7802_CTRL2_CRS = 4,
---   NAU7802_CTRL2_CHS = 7,
--- } CTRL2_Bits;
 CTRL2_Bits = enum( 
 {
 	"NAU7802_CTRL2_CALMOD",    -- = 0,
@@ -213,13 +156,6 @@ CTRL2_Bits = enum(
 -- } PGA_Bits;
 
 -- //Bits within the PGA PWR register
--- typedef enum
--- {
---   NAU7802_PGA_PWR_PGA_CURR = 0,
---   NAU7802_PGA_PWR_ADC_CURR = 2,
---   NAU7802_PGA_PWR_MSTR_BIAS_CURR = 4,
---   NAU7802_PGA_PWR_PGA_CAP_EN = 7,
--- } PGA_PWR_Bits;
 PGA_PWR_Bits = enum( 
 {
 	"NAU7802_PGA_PWR_PGA_CURR",       -- = 0,
@@ -233,17 +169,6 @@ PGA_PWR_Bits = enum(
 }, 0)
 
 -- //Allowed Low drop out regulator voltages
--- typedef enum
--- {
---   NAU7802_LDO_2V4 = 0b111,
---   NAU7802_LDO_2V7 = 0b110,
---   NAU7802_LDO_3V0 = 0b101,
---   NAU7802_LDO_3V3 = 0b100,
---   NAU7802_LDO_3V6 = 0b011,
---   NAU7802_LDO_3V9 = 0b010,
---   NAU7802_LDO_4V2 = 0b001,
---   NAU7802_LDO_4V5 = 0b000,
--- } NAU7802_LDO_Values;
 NAU7802_LDO_Values = enum( 
 {
   "NAU7802_LDO_4V5", -- = 0b000,
@@ -257,17 +182,6 @@ NAU7802_LDO_Values = enum(
 }, 0)
 
 -- //Allowed gains
--- typedef enum
--- {
---   NAU7802_GAIN_128 = 0b111,
---   NAU7802_GAIN_64 = 0b110,
---   NAU7802_GAIN_32 = 0b101,
---   NAU7802_GAIN_16 = 0b100,
---   NAU7802_GAIN_8 = 0b011,
---   NAU7802_GAIN_4 = 0b010,
---   NAU7802_GAIN_2 = 0b001,
---   NAU7802_GAIN_1 = 0b000,
--- } NAU7802_Gain_Values;
 NAU7802_Gain_Values = enum(
 {
 	"NAU7802_GAIN_1",   -- = 0b000,
@@ -282,14 +196,6 @@ NAU7802_Gain_Values = enum(
 
 
 -- //Allowed samples per second
--- typedef enum
--- {
---   NAU7802_SPS_320 = 0b111,
---   NAU7802_SPS_80 = 0b011,
---   NAU7802_SPS_40 = 0b010,
---   NAU7802_SPS_20 = 0b001,
---   NAU7802_SPS_10 = 0b000,
--- } NAU7802_SPS_Values;
 NAU7802_SPS_Values = enum(
 {
 	"NAU7802_SPS_10",  -- = 0b000,
@@ -300,19 +206,13 @@ NAU7802_SPS_Values = enum(
 }, 0)
 
 -- //Select between channel values
--- typedef enum
--- {
---   NAU7802_CHANNEL_1 = 0,
---   NAU7802_CHANNEL_2 = 1,
--- } NAU7802_Channels;
+NAU7802_Channels = enum(
+{
+	"NAU7802_CHANNEL_1", -- = 0,
+	"NAU7802_CHANNEL_2", -- = 1,
+}, 0)
 
 -- //Calibration state
--- typedef enum
--- {
---   NAU7802_CAL_SUCCESS = 0,
---   NAU7802_CAL_IN_PROGRESS = 1,
---   NAU7802_CAL_FAILURE = 2,
--- } NAU7802_Cal_Status;
 NAU7802_Cal_Status = enum(
 {
 	"NAU7802_CAL_SUCCESS",     -- = 0,
@@ -1115,13 +1015,10 @@ function NAU7802_getRegister(registerAddress)
 	local result, str
 	result = ez.I2Cread(_deviceAddress,registerAddress)
 
-
 	if result == nil then
 		result = -1
-		-- return -1
 	else
 		result = string.byte(result, 1)
-		-- return string.byte(result, 1)
 	end
 
 	-- str = "0x" .. string.format("%02X", result) ..  "=getRegister(addr=0x" .. string.format("%02X",_deviceAddress) .. ", reg=0x" .. string.format("%02X",registerAddress) .. ")"
@@ -1194,23 +1091,25 @@ end
 
 function titleScreen(fn) -- Show a title sequence for the program
 	local result
-
 	ez.Cls(ez.RGB(0,0,0))
 
-	-- ez.SetAlpha(255)
-	-- ez.SetXY(44,55)
-	-- result = ez.PutPictFile(2, 3, "/Scale/circle-alpha.bmp")
-	-- ez.SerialTx("result=".. tostring(result) .. "\r\n", 80, debug_port) -- doesn't work
-	-- printLine(font_height, 6, "/Scale/circle-alpha.bmp")
+	-- JPEG Tests (not working yet)
+	-- ez.PutPictFile(0, 0, "Images/EarthLCD_320x240_Splash.jpeg") -- doesn't work
+	-- ez.PutPictFile(0, 0, "/Images/EarthLCD_320x240_Splash.jpeg") -- doesn't work
+	-- result = ez.PutPictFile("/Images/EarthLCD_320x240_Splash.jpeg") -- doesn't work
+	-- ez.PutPictNo(8)
 	-- ez.Wait_ms(2000)
 
-	-- ez.SetAlpha(128)
-	-- ez.SetXY(11,12)
-	-- result = ez.PutPictFile(2, 3, "/Scale/pulltest-bg.bmp")
-	-- ez.SerialTx("result=".. tostring(result) .. "\r\n", 80, debug_port) -- doesn't work
-	-- printLine(font_height, 6, "/Scale/pulltest-bg.bmp")
-	-- ez.Wait_ms(2000)
+	-- pulltest-bg.bmp image offset @ 0x8a (newer bmp header)
+	-- pulltest-bg1.bmp image offset @ 0x36 (older bmp header)
+	-- If pulltest-bg.bmp image is shifted to the right a firmware update is required
 
+	ez.SetAlpha(255)
+	ez.SetXY(0, 0)
+	result = ez.PutPictFile(0, 0, "/Scale/pulltest-bg.bmp")
+	ez.SerialTx("result=".. tostring(result) .. "\r\n", 80, debug_port) -- doesn't work
+
+	-- Alpha Channel Test (not working yet)
 	-- ez.SetAlpha(64)
 	-- ez.SetXY(66,77)
 	-- result = ez.PutPictFile(2, 3, "/Scale/circle-alpha.bmp")
@@ -1219,25 +1118,10 @@ function titleScreen(fn) -- Show a title sequence for the program
 	-- ez.SetAlpha(255)
 	-- ez.Wait_ms(2000)
 
-	-- ez.SetAlpha(32)
-	-- ez.SetXY(44,55)
-	-- result = ez.PutPictFile(2, 3, "/Scale/pulltest-bg1.bmp")
-	-- ez.SerialTx("result=".. tostring(result) .. "\r\n", 80, debug_port) -- doesn't work
-	-- printLine(font_height, 6, "/Scale/pulltest-bg1.bmp")
-	-- ez.Wait_ms(2000)
+	printBox(240, 7, 300, ez.RGB(0x17, 0x28, 0x15), ez.RGB(0x95, 0xb4, 0x6a), font_height, "TARE")
+	printBox(230, 42, 300, ez.RGB(0x17, 0x28, 0x15), ez.RGB(0x95, 0xb4, 0x6a), font_height, "CLEAR")
+	printBox(74, 10, 175, ez.RGB(0xee, 0xf2, 0xe8), ez.RGB(0x3e, 0x56, 0x22), font_height, "Initializing...")
 
-	-- ez.PutPictFile(0, 0, "Images/EarthLCD_320x240_Splash.jpeg") -- doesn't work
-	-- ez.PutPictFile(0, 0, "/Images/EarthLCD_320x240_Splash.jpeg") -- doesn't work
-	-- result = ez.PutPictFile("/Images/EarthLCD_320x240_Splash.jpeg") -- doesn't work
-	-- ez.PutPictNo(8)
-
-	ez.SetAlpha(255)
-	ez.SetXY(0, 0)
-	result = ez.PutPictFile(0, 0, "/Scale/pulltest-bg.bmp")
-	ez.SerialTx("result=".. tostring(result) .. "\r\n", 80, debug_port) -- doesn't work
-
-	-- ez.PutPictNo(100) 
-	-- printLine(font_height, 0, "EarthLCD Load Cell Scale")
 end
 
 
@@ -1304,11 +1188,10 @@ ez.SerialTx("S/N: " .. ez.SerialNo .. "\r\n", 80, debug_port)
 ez.SerialTx(ez.Width .. "x" .. ez.Height .. "\r\n", 80, debug_port)
 
 -- Setup button(s)
--- ez.Button(0, 1, -1, -11, -1, 0, 0, 320, 240)
-ez.Button(0, 1, -1, -11, -1, 210,  0, 110, 35)
-ez.Button(1, 1, -1, -11, -1, 210, 35, 110, 35)
-ez.Button(2, 1, -1, -11, -1, 0, 0, 50, 40)
-ez.Button(3, 1, -1, -11, -1, 160, 120, 160, 120)
+ez.Button(0, 1, -1, -11, -1, 210,  0, 110, 35) -- Tare button
+ez.Button(1, 1, -1, -11, -1, 210, 35, 110, 35) -- Clear button
+ez.Button(2, 1, -1, -11, -1, 0, 0, 50, 40)     -- Menu
+ez.Button(3, 1, -1, -11, -1, 0, 80, 320, 150)  -- Plot Area
 
 
 -- Start to receive button events
@@ -1320,67 +1203,76 @@ titleScreen(fn)
 
 ez.SerialTx("ez.I2CopenMaster\r\n", 80, debug_port)
 result = ez.I2CopenMaster()
--- printLine(font_height, 5, "I2C Open: " .. tostring(result) )
 
 ez.SerialTx("NAU7802_isConnected\r\n", 80, debug_port)
 result = NAU7802_isConnected()
--- printLine(font_height, 6, "isConnected:" .. tostring(result) )
 
 ez.SerialTx("NAU7802_begin\r\n", 80, debug_port)
 result = NAU7802_begin(true) -- return boolean
--- printLine(font_height, 7, "begin:" .. tostring(result) )
--- ez.Wait_ms(1000)
-
--- ez.BoxFill(210,  0, 319, 35, ez.RGB(0xff, 0x00, 0x00)) -- X1, Y1, X2, Y2, Color
--- ez.BoxFill(210, 35, 319, 70, ez.RGB(0xff, 0xff, 0x00)) 
--- ez.BoxFill(0, 0, 50, 40, ez.RGB(0x00, 0xff, 0x00))
--- ez.BoxFill(160, 120, 160, 120, ez.RGB(0x00, 0xff, 0xff)) 
 
 
-local graph_x = 10
+local graph_xmin = 10
+local graph_xmax = 310
+local graph_x = graph_xmin
+
+local graph_ymid = 150
+local graph_ymin =  81
+local graph_ymax = 230
+local graph_y = graph_ymid
 
 while 1 do
-	-- get new weight
+	-- If a new weight is available then read it and update the screen
 	if NAU7802_available() == true then
 		local raw_weight
 		raw_weight = NAU7802_getReading()
-		-- weight = (0.9 * weight) + (0.1 * ((raw_weight - tare) + .0))
+		-- Convert the intenger weight to a floating point value
 		local weight_new = (raw_weight - tare) + .0
+
+		-- Scale the weight (need to add calibration here)
 		weight_new = weight_new / 1000.0
-		weight = weight * 0.8 + weight_new * 0.2
-		if update_max == true then
-			ez.SetAlpha(255)
-			ez.SetXY(0, 0)
-			result = ez.PutPictFile(0, 0, "/Scale/pulltest-bg.bmp")
-			ez.SerialTx("result=".. tostring(result) .. "\r\n", 80, debug_port) -- doesn't work
-			printBox(240, 7, 300, ez.RGB(0x17, 0x28, 0x15), ez.RGB(0x95, 0xb4, 0x6a), font_height, "TARE")
-			printBox(230, 42, 300, ez.RGB(0x17, 0x28, 0x15), ez.RGB(0x95, 0xb4, 0x6a), font_height, "CLEAR")
-		end
-		if weight > weight_max or update_max == true then
-			update_max = false
-			weight_max = weight
-			printBox(10, 40, 200, ez.RGB(0xee, 0xf2, 0xe8), ez.RGB(0x3e, 0x56, 0x22), font_height, "MAX: " .. string.format("%0.1f", weight_max) .. " kg")
-		end
-		-- printLine(font_height, 1, "Reading: " .. string.format("%d", weight))
-		-- printBox(x1, y1, x2, fg, bg, font_height, str)
-		printBox(74, 10, 175, ez.RGB(0xee, 0xf2, 0xe8), ez.RGB(0x3e, 0x56, 0x22), font_height, string.format("%0.1f", weight))
-		printBox(175, 10, 200, ez.RGB(0xee, 0xf2, 0xe8), ez.RGB(0x3e, 0x56, 0x22), font_height, "kg")
+		-- Add a low pass filter to suppress ADC noise
+		weight = weight * 0.7 + weight_new * 0.3
 
-		ez.Plot( graph_x , 150 - math.floor(weight), ez.RGB(0x3e, 0x56, 0x22) )
-		graph_x = graph_x + 1
-		if graph_x >= 310 then
-			graph_x = 0
-		end
-
+		-- If the update_tare button was pressed then calculate a new tare.
 		if update_tare == true then
 			update_tare = false
 			tare = raw_weight
 			str = "tare=" .. tostring(tare) .. ", weight=" .. string.format("%0.1f", weight)
 			ez.SerialTx(str .. "\r\n", 80, debug_port)
-	end
+		end
 
+		-- If update_clear button is pressed then clear the screen
+		if update_max == true then
+			titleScreen(fn)
+		end
+		if weight > weight_max or update_max == true then
+			update_max = false
+			weight_max = weight
+			printBox(10, 40, 200, ez.RGB(0xee, 0xf2, 0xe8), ez.RGB(0x3e, 0x56, 0x22), font_height, "MAX: " .. string.format("%0.1f", weight_max))
+			printBox(175, 40, 200, ez.RGB(0xee, 0xf2, 0xe8), ez.RGB(0x3e, 0x56, 0x22), font_height, "kg")
+		end
 
+		-- Draw the current weight on the screen
+		printBox(74, 10, 175, ez.RGB(0xee, 0xf2, 0xe8), ez.RGB(0x3e, 0x56, 0x22), font_height, string.format("%0.1f", weight))
+		printBox(175, 10, 200, ez.RGB(0xee, 0xf2, 0xe8), ez.RGB(0x3e, 0x56, 0x22), font_height, "kg")
+
+		-- Offset weight to center of Y on graph
+		graph_y = graph_ymid - math.floor(weight)
+		-- Limit graph y value to extents of y-axis on the graph
+		if graph_y > graph_ymax then
+			graph_y = graph_ymax
+		end
+		if graph_y < graph_ymin then
+			graph_y = graph_ymin
+		end
+		-- Draw the weight graph on the screen
+		ez.Plot( graph_x , graph_y, ez.RGB(0x3e, 0x56, 0x22) )
+		-- advance the x axis
+		graph_x = graph_x + 1
+		-- Limit graph x00 value to extents of x-axis on the graph
+		if graph_x >= graph_xmax then
+			graph_x = graph_xmin
+		end
 	end
-	-- ez.Wait_ms(25)
 end
 
