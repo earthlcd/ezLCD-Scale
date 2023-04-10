@@ -1,14 +1,14 @@
 # ezLCD Load Cell Scale Demonstration Project
-The following project demonstrates how to turn an ezLCD product into a scale and is a good jumpping off point for your own applicaiton.  The applicaiton monitors a load cell to detect the weight of an attached load.  The weight of the load is displayed on the screen as well as graphed vs time.  The max load is logged so that the scale can be use for pull testing.  A tare button is provided to tare the scale.  A clear button is provided that clears the graph as well as the max weight readings.
+The following project demonstrates how to turn an ezLCD product into a scale and is a good jumping off point for your own applicaiton.  The application monitors a load cell to detect the weight of an attached load.  The weight of the load is displayed on the screen as well as graphed vs time.  The max load is logged so that the scale can be used for pull testing.  A tare button is provided to tare the scale.  A clear button is provided to clear the graph as well as the max weight readings.
 ![image](https://user-images.githubusercontent.com/198251/230446212-652fb365-034e-48d2-9957-a07fc63e6923.png)
 ![image](https://user-images.githubusercontent.com/198251/230446279-e6f0c82c-591b-4b8b-958b-fa490a113ad3.png)
 
 
-## Complatible Products
+## Compatible Products
 Currently this project has only been tested with the ezLCD-5035 product.  It may be ported to other products in the future.
 
-## Demonstates
-- Touch Screen Button Handeling
+## Demonstrates
+- Touch Screen Button Handling
 - Displaying BMP Images
 - Displaying True Type Fonts
 - Plotting data
@@ -16,8 +16,8 @@ Currently this project has only been tested with the ezLCD-5035 product.  It may
 - I2C Communications in Lua
 
 ## Requirements
-- [EarthLCD ezLCD-5035-RT 3.5"](https://earthlcd.com/products/ezlcd-5x)
-- [SparkFun Qwiic Scale - NAU7802](https://www.sparkfun.com/products/15242) (or equivilant)
+- [EarthLCD ezLCD-5035-RT 3.5"] (https://earthlcd.com/products/ezlcd-5x)
+- [SparkFun Qwiic Scale - NAU7802] (https://www.sparkfun.com/products/15242) (or equivilant)
 - [Adafruit Strain Gauge Load Cell - 4 Wires - 20Kg](https://www.adafruit.com/product/4543) (or equivilant)
 
 ## Wiring
