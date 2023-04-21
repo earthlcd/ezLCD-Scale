@@ -1171,18 +1171,22 @@ function deviceData()
 end
 
 function deviceBodyData(index)
+	bg_color = ez.RGB(0x00, 0x00, 0x00)
 	g = (G * body[index].mass_kg) / (body[index].radius_m * body[index].radius_m)
+	lbs = 100 -- test weight in lbs
+
 	str = "Name: " .. body[index].name
-	printBox(400, 1 * font_height, 800, ez.RGB(0xff, 0xff, 0xff), ez.RGB(0x00, 0x00, 0x80), font_height, str)
+	printBox(400, 1 * font_height, 800, ez.RGB(0xff, 0xff, 0xff), bg_color, font_height, str)
 	str = "Mass: " .. body[index].mass_kg .. " kg"
-	printBox(400, 2 * font_height, 800, ez.RGB(0xff, 0xff, 0xff), ez.RGB(0x00, 0x00, 0x80), font_height, str)
+	printBox(400, 2 * font_height, 800, ez.RGB(0xff, 0xff, 0xff), bg_color, font_height, str)
 	str = "radius: " .. string.format("%0.1f", (body[index].radius_m / 1000)) .. " km"
-	printBox(400, 3 * font_height, 800, ez.RGB(0xff, 0xff, 0xff), ez.RGB(0x00, 0x00, 0x80), font_height, str)
+	printBox(400, 3 * font_height, 800, ez.RGB(0xff, 0xff, 0xff), bg_color, font_height, str)
 	str = "g = G*M/R^2 = " .. string.format("%0.3f", g)
-	printBox(400, 4 * font_height, 800, ez.RGB(0xff, 0xff, 0xff), ez.RGB(0x00, 0x00, 0x80), font_height, str)
-	lbs = 100
-	str = "lbs: " .. string.format("%0.1f", lbs) .. "N: " .. string.format("%0.1f", lbs * lbs_to_N) .. " kg: " .. string.format("%0.1f", lbs * lbs_to_N / g)
-	printBox(400, 5 * font_height, 800, ez.RGB(0xff, 0xff, 0xff), ez.RGB(0x00, 0x00, 0x80), font_height, str)
+	printBox(400, 4 * font_height, 800, ez.RGB(0xff, 0xff, 0xff), bg_color, font_height, str)
+	str = "lbs: " .. string.format("%0.1f", lbs) .. " N: " .. string.format("%0.1f", lbs * lbs_to_N) .. " kg: " .. string.format("%0.1f", lbs * lbs_to_N / g)
+	printBox(400, 5 * font_height, 800, ez.RGB(0xff, 0xff, 0xff), bg_color, font_height, str)
+	str = "multiple: " .. string.format("%0.3f", g / g_earth_m_per_s2)
+	printBox(400, 6 * font_height, 800, ez.RGB(0xff, 0xff, 0xff), bg_color, font_height, str)
 end
 
 -----------------------------------------------------------------------------
